@@ -1,0 +1,27 @@
+import React, { Component } from 'react';
+import { Stage, Loop, World, Body } from 'react-game-kit';
+export default class GamePanel extends Component {
+
+    constructor(props) {
+        super(props);
+        this.drawSomething = this.drawSomething.bind(this);
+    }
+
+    render() {
+        return ( 
+          <Loop>
+            <Stage styleClass={{ background: '#000', width: 1536, height: 1024 }}>
+            <World gravity={{ x: 0, y: 1, scale: 0.0003}}>
+            <Body args = { [0, 0, 75, 75] }
+            ref = { (b) => this.body = b.body }>
+            // Sprites go here 
+            </Body> 
+            </World>  
+            </Stage> 
+            </Loop> 
+        );
+    }
+
+    drawSomething() {}
+
+}
