@@ -1,18 +1,20 @@
-.gamePanel {
-  width: 1024px;
-  height: 620px;
-  border: 1px solid black;
-  margin-top: 100px;
-  padding: 10px;
-  margin-left: 100px;
-  margin-right: 100px;
-  font-family: monospace;
-  font-size: 1em;
+.container {
+  width: 95%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
 }
 
 
 .gameBoard {
+  border: 1px solid red;
+  padding: 50px;
+  vertical-align: top;
+  float: right;
+  width: 75%;
+
+  font-size: 1.5em;
+  line-height: 1.8em;
   display: grid;
-  grid-template-columns: repeat(34, 1fr);
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
 }

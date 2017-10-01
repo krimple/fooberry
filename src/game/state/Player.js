@@ -6,4 +6,8 @@ export default class Player extends TileEntity {
        this.y = startY;
        this.x = startX;
     }
+
+    display() {
+     return 'P';
+    }
 }

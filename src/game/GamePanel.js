@@ -1,40 +1,34 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import GameTile from './GameTile';
-import CoordinateHelper from './utils/CoordinateHelper';
-
 class GamePanel extends Component {
 
   constructor(props) {
     super(props);
-    this.drawSomething = this.drawSomething.bind(this);
+    this.drawSomething = this
+      .drawSomething
+      .bind(this);
   }
 
   render() {
-    if (!this.props.grid) {
-      return <p>Not rendered</p>;
+    if (this.props.grid) {
+      let rows = this.props.grid.map((cell) => {
+        return <GameTile key={'grid-cell-' + cell.x + ',' + cell.y} tile={cell}/>;
+      });
+
+      return <div className="gameBoard">{rows}</div>;
+    } else {
+      return <p>No data...</p>;
     }
-
-    const tiles = this.props.grid.map((tile, idx) => {
-      return <GameTile tile={tile} key={'tile-'+idx} />
-    });
-
-    return (
-        <div className="gameBoard">
-          {tiles}
-        </div>
-    );
   }
 
-  drawSomething() {
-  }
+  drawSomething() {}
+
 }
 
 function mapStateToProps(state) {
   return {
-    grid: state.grid,
-    numRows: state.numRows,
-    numCols: state.numCols
+    grid: state.grid
   };
 }
 
