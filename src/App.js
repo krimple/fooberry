@@ -8,16 +8,54 @@ import './App.css';
 
 const store = createGameStore();
 
-setInterval(() => {
+/*setInterval(() => {
   console.log('updating tile', new Date());
   store.dispatch(actionCreators.changeRandomTile());
-}, 100);
+}, 100);*/
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.processKeyStroke = this.processKeyStroke.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.processKeyStroke);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.processKeyStroke);
+  }
+
+  processKeyStroke(event) {
+    console.dir(event);
+    switch (event.key) {
+      case 'j':
+        console.log('west');
+        store.dispatch(actionCreators.moveActionCreator('west'));
+        break;
+
+      case 'k':
+        console.log('north');
+        store.dispatch(actionCreators.moveActionCreator('north'));
+        break;
+
+      case 'l':
+        console.log('south');
+        store.dispatch(actionCreators.moveActionCreator('south'));
+        break;
+
+      case ';':
+        console.log('east');
+        store.dispatch(actionCreators.moveActionCreator('east'));
+        break;
+    }
+  }
+  
   render() {
     return (
         <Provider store={store}>
-          <GamePanel width={800} height={600}></GamePanel>
+          <GamePanel/>
         </Provider>
     );
   }

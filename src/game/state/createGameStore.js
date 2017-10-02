@@ -14,11 +14,19 @@ const coordinateHelper = new CoordinateHelper(numRows, numCols);
 const initialState = {
     numRows: numRows,
     numCols: numCols,
-    grid:  generateGrid(numRows, numCols)
+    grid:  generateGrid(numRows, numCols),
+    atoms: {
+      player: {
+        x: 7,
+        y: 7,
+        strength: 100
+      }
+    }
 };
 
 let createGameStore = () => {
-    return createStore(boardReducer, initialState);
+    return createStore(boardReducer, initialState,
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 };
 
 function boardReducer(state, action) {
@@ -26,30 +34,24 @@ function boardReducer(state, action) {
     case actions.MOVE_ACTION:
       return moveTo(state, action.payload.direction);
     case actions.CHANGE_RANDOM_TILE:
-      const randomTile = Math.floor(Math.random() * (numRows * numCols));
-      const randomValue = Math.floor(Math.random() * 4);
-      return Object.assign({}, state, {
-        grid: state.grid.map((item, idx) => {
-          if (idx === randomTile) {
-            return new Tile(Point.calcX(randomTile), Point.calcY(randomTile), randomValue);
-          } else {
-            return item;
-          }
-        })
-      });
+      return changeRandomTile(state);
     default:
       return state;
   }
 }
 
-function moveTo(state, direction) {
-  // find existing location
-  if (state.playerLocation) {
-
-  }
-  // see if you can move to the target location
-  // remove player
-  // place player in target
+function changeRandomTile(state) {
+  const randomTile = Math.floor(Math.random() * (numRows * numCols));
+  const randomValue = Math.floor(Math.random() * 4);
+  return Object.assign({}, state, {
+    grid: state.grid.map((item, idx) => {
+      if (idx === randomTile) {
+        return new Tile(Point.calcX(randomTile), Point.calcY(randomTile), randomValue);
+      } else {
+        return item;
+      }
+    })
+  });
 }
 
 function generateGrid(numRows, numCols) {
@@ -63,6 +65,40 @@ function generateGrid(numRows, numCols) {
     grid.push(tile);
   }
   return grid;
+}
+
+function moveTo(state ,direction) {
+
+  const currentPosition = new Point(state.atoms.player.x, state.atoms.player.y);
+  console.dir(currentPosition);
+  let newPosition;
+  switch (direction) {
+    case 'north':
+      newPosition = currentPosition.decY();
+      break;
+    case 'south':
+      newPosition = currentPosition.incY();
+      break;
+    case 'west':
+      newPosition = currentPosition.decX();
+      break;
+    case 'east':
+      newPosition = currentPosition.incX();
+      break;
+    default:
+      newPosition = currentPosition;
+  }
+  console.log(`New position is ${JSON.stringify(newPosition)}`)
+  const newState =  Object.assign({}, state, {
+    atoms: Object.assign({}, state.atoms, {
+      player: Object.assign({}, state.atoms.player, {
+        x: newPosition.x,
+        y: newPosition.y
+      })
+    })
+  });
+  console.dir(newState.atoms.player);
+  return newState;
 }
 
 export default createGameStore;
