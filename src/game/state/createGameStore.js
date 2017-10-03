@@ -97,7 +97,6 @@ function moveTo(state ,direction) {
       })
     })
   });
-  console.dir(newState.atoms.player);
   return newState;
 }
 

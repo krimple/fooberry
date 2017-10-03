@@ -1,20 +1,31 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import './ControlPanel.css';
+import styled from 'styled-components';
+
+const Wrapper = styled.section`
+  padding-top: 70px;
+  padding-left: 100px;
+  vertical-align: top;
+  float: left;
+  padding-right: 50px;
+  width: auto;
+`;
 
 class ControlPanel extends Component {
 
   render() {
-    const moves = this.props.moves.map((move) => {
+    const moves = this.props.moves
+        .slice(0, 8)
+        .map((move) => {
       return <div>{move}</div>;
     });
     return (
-        <div className="controlPanel">
+        <Wrapper>
           <h1>Control Panel</h1>
           <hr/>
           <h3>Moves</h3>
           {moves}
-        </div>
+        </Wrapper>
     );
 
   }

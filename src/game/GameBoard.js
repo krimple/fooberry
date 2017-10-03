@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import GameTile from './GameTile';
+import styled from 'styled-components';
 
-import './GameBoard.css';
+const Wrapper = styled.section`
+  font-size: 1.5em;
+  line-height: 1.8em;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(15, 1fr);
+  grid-template-columns: repeat(15, 1fr);
+`;
 
 class GameBoard extends Component {
   constructor(props) {
@@ -16,7 +24,7 @@ class GameBoard extends Component {
       });
 
       return (
-          <div className="gameBoard">{rows}</div>
+          <Wrapper>{rows}</Wrapper>
       );
     } else {
       return <p>No data...</p>;
