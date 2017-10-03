@@ -15,7 +15,9 @@ class GameBoard extends Component {
         return <GameTile key={'grid-cell-' + cell.x + ',' + cell.y} tile={cell}/>;
       });
 
-      return <div className="gameBoard">{rows}</div>;
+      return (
+          <div className="gameBoard">{rows}</div>
+      );
     } else {
       return <p>No data...</p>;
     }

@@ -8,10 +8,10 @@ import './App.css';
 
 const store = createGameStore();
 
-/*setInterval(() => {
-  console.log('updating tile', new Date());
-  store.dispatch(actionCreators.changeRandomTile());
-}, 100);*/
+// setInterval(() => {
+//   console.log('updating tile', new Date());
+//   store.dispatch(actionCreators.changeRandomTile());
+// }, 100);
 
 class App extends Component {
   constructor(props) {

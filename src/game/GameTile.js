@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './GameTile.css';
 
-export default class GameTile extends Component {
+class GameTile extends Component {
 
   constructor(props) {
     super(props);
@@ -10,13 +11,22 @@ export default class GameTile extends Component {
   }
 
   render() {
-    return (
-        <img alt={this.props.tile.description}
-                className="tileIcon"
-                src={this.props.tile.display()}
-                onMouseEnter={this.hover}
-                onMouseLeave={this.endHover} />
-    );
+    if (this.props.player.x === this.props.tile.x &&
+        this.props.player.y === this.props.tile.y) {
+     return (
+         <img alt="player"
+              className="playerIcon"
+              src="icons/delapouite/originals/svg/walking-scout.svg" />
+     );
+    } else {
+      return (
+          <img alt={this.props.tile.description}
+               className="tileIcon"
+               src={this.props.tile.display()}
+               onMouseEnter={this.hover}
+               onMouseLeave={this.endHover}/>
+      );
+    }
   }
 
   hover() {
@@ -29,3 +39,10 @@ export default class GameTile extends Component {
 
 }
 
+function mapStateToProps(state) {
+  return {
+    player: state.atoms.player
+  };
+}
+
+export default connect(mapStateToProps)(GameTile);

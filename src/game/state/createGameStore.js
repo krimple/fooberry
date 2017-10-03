@@ -3,7 +3,6 @@ import * as actions from './gameStoreActions';
 import CoordinateHelper from  '../utils/CoordinateHelper';
 import Tile from './Tile';
 import Point from './Point';
-import Player from './Player';
 
 const numRows = 15,
       numCols = 15;
@@ -14,6 +13,7 @@ const coordinateHelper = new CoordinateHelper(numRows, numCols);
 const initialState = {
     numRows: numRows,
     numCols: numCols,
+    moves: [],
     grid:  generateGrid(numRows, numCols),
     atoms: {
       player: {
@@ -68,7 +68,6 @@ function generateGrid(numRows, numCols) {
 }
 
 function moveTo(state ,direction) {
-
   const currentPosition = new Point(state.atoms.player.x, state.atoms.player.y);
   console.dir(currentPosition);
   let newPosition;
@@ -88,8 +87,9 @@ function moveTo(state ,direction) {
     default:
       newPosition = currentPosition;
   }
-  console.log(`New position is ${JSON.stringify(newPosition)}`)
+  console.log(`New position is ${JSON.stringify(newPosition)}`);
   const newState =  Object.assign({}, state, {
+    moves: [`Player moved ${direction} to ${newPosition.x},${newPosition.y}`, ...state.moves],
     atoms: Object.assign({}, state.atoms, {
       player: Object.assign({}, state.atoms.player, {
         x: newPosition.x,

@@ -4,3 +4,10 @@ img.tileIcon {
   width: 40px;
   opacity: .2;
 }
+
+img.playerIcon {
+  border: 1px solid black;
+  height: 40px;
+  width: 40px;
+  opacity: 1.0;
+}

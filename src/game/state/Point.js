@@ -22,7 +22,7 @@ export default class Point {
 
   translateXYtoPos(x, y) {
     guard();
-    return y * this.maxY + x;
+    return y * this.maxX + x;
   }
 
   decX() {
