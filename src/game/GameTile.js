@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './GameTile.css';
+import styled from 'styled-components';
+
+const TileIcon = styled.img`
+  border: 1px solid white;
+  height: 40px;
+  width: 40px;
+  opacity: .2;
+`;
+
+const PlayerIcon = styled.img`
+  border: 1px solid black;
+  height: 40px;
+  width: 40px;
+  opacity: 1.0;
+`;
 
 class GameTile extends Component {
 
@@ -14,13 +28,13 @@ class GameTile extends Component {
     if (this.props.player.x === this.props.tile.x &&
         this.props.player.y === this.props.tile.y) {
      return (
-         <img alt="player"
+         <PlayerIcon alt="player"
               className="playerIcon"
               src="icons/delapouite/originals/svg/walking-scout.svg" />
      );
     } else {
       return (
-          <img alt={this.props.tile.description}
+          <TileIcon alt={this.props.tile.description}
                className="tileIcon"
                src={this.props.tile.display()}
                onMouseEnter={this.hover}

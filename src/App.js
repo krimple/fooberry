@@ -4,8 +4,6 @@ import createGameStore from './game/state/createGameStore';
 import * as actionCreators from './game/state/gameStoreActionCreators';
 import GamePanel from './game/GamePanel';
 
-import './App.css';
-
 const store = createGameStore();
 
 // setInterval(() => {

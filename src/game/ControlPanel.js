@@ -16,8 +16,8 @@ class ControlPanel extends Component {
   render() {
     const moves = this.props.moves
         .slice(0, 8)
-        .map((move) => {
-      return <div>{move}</div>;
+        .map((move, idx) => {
+      return <div key={'moves-' + idx}>{move}</div>;
     });
     return (
         <Wrapper>

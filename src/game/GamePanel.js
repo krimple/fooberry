@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import GameBoard from './GameBoard';
 import ControlPanel from './ControlPanel';
-import './GamePanel.css';
 import styled from 'styled-components';
 
 const PanelSection = styled.section`
