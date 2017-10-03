@@ -107,7 +107,10 @@ function moveTo(state, direction) {
   return state.withMutations((state) => {
     return state.setIn(['atoms', 'player', 'x'], newPosition.getX())
         .setIn(['atoms', 'player', 'y'], newPosition.getY())
-        .setIn(['moves'], state.get('moves').insert(0, [`Player moved ${direction} to ${newPosition.x},${newPosition.y}`]));
+        .setIn(['moves'], state.get('moves').insert(0,
+            [`Player moved ${direction} to ${
+                state.getIn(['grid', newPosition.getY(), newPosition.getX()]).terrain.description} ${
+                newPosition.getX()},${newPosition.getY()}`]));
   });
 }
 
