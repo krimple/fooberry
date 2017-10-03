@@ -4,12 +4,20 @@ export default class CoordinateHelper {
     this.maxY = maxY;
   }
 
-  calcX(pos, colSize) {
+  static calcX(pos, colSize) {
     return Math.floor(pos / colSize);
   }
 
-  calcY(pos, rowSize) {
+  static calcY(pos, rowSize) {
     return pos % rowSize;
+  }
+
+  static calcXDistanceTo(pointA, pointB) {
+    return pointB.x - pointA.x
+  };
+
+  static calcYDistanceTo(pointA, pointB) {
+    return pointB.y - pointA.y;
   }
 
   translateXYtoPos(x, y) {

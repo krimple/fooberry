@@ -10,12 +10,20 @@ const TileIcon = styled.img`
 `;
 
 const PlayerIcon = styled.img`
+  background-image: url(icons/delapouite/originals/svg/walking-scout.svg);
   border: 1px solid black;
   height: 40px;
   width: 40px;
   opacity: 1.0;
 `;
 
+const NPCThiefIcon = styled.img`
+  background-image: url(icons/cathelineau/originals/svg/bad-gnome.svg);
+  border: 1px solid black;
+  height: 40px;
+  width: 40px;
+  opacity: 1.0;
+`;
 class GameTile extends Component {
 
   constructor(props) {
@@ -28,10 +36,15 @@ class GameTile extends Component {
     if (this.props.player.x === this.props.tile.x &&
         this.props.player.y === this.props.tile.y) {
      return (
-         <PlayerIcon alt="player"
-              className="playerIcon"
-              src="icons/delapouite/originals/svg/walking-scout.svg" />
+         <PlayerIcon />
+
+
      );
+    } else if (this.props.thief.x === this.props.tile.x &&
+               this.props.thief.y === this.props.tile.y) {
+      return (
+          <NPCThiefIcon/>
+      )
     } else {
       return (
           <TileIcon alt={this.props.tile.description}
@@ -55,7 +68,8 @@ class GameTile extends Component {
 
 function mapStateToProps(state) {
   return {
-    player: state.atoms.player
+    player: state.atoms.player,
+    thief: state.atoms.thief
   };
 }
 

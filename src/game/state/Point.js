@@ -40,6 +40,18 @@ export default class Point {
   incY() {
     return new Point(this.x, this.y + 1 >= Point.maxY ?  0 : this.y + 1);
   }
+
+  /**
+   * Make sure to decrement / increment X then Y position and return new Point when done
+   * @param xDelta
+   * @param yDelta
+   * @returns {*}
+   */
+  move(xDelta, yDelta) {
+    const xTranslate = xDelta === 1 ? this.incX() : xDelta === -1 ? this.decX() : xDelta;
+    const yTranslate = yDelta === 1 ? this.incY() : yDelta === -1 ? this.decY(): yDelta;
+    return new Point(xTranslate, yTranslate);
+  }
 }
 
 

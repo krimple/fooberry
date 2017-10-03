@@ -26,27 +26,26 @@ class App extends Component {
   }
 
   processKeyStroke(event) {
-    console.dir(event);
+    let direction;
     switch (event.key) {
       case 'j':
-        console.log('west');
-        store.dispatch(actionCreators.moveActionCreator('west'));
+        direction = 'west';
         break;
 
       case 'k':
-        console.log('north');
-        store.dispatch(actionCreators.moveActionCreator('north'));
+        direction = 'north';
         break;
 
       case 'l':
-        console.log('south');
-        store.dispatch(actionCreators.moveActionCreator('south'));
+        direction = 'south';
         break;
 
       case ';':
-        console.log('east');
-        store.dispatch(actionCreators.moveActionCreator('east'));
+        direction = 'east';
         break;
+    }
+    if (direction) {
+      store.dispatch(actionCreators.moveActionCreator(direction));
     }
   }
   

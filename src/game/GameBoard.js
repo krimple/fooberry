@@ -13,10 +13,7 @@ const Wrapper = styled.section`
 `;
 
 class GameBoard extends Component {
-  constructor(props) {
-    super(props)
-  }
-  
+
   render() {
     if (this.props.grid) {
       let rows = this.props.grid.map((cell) => {

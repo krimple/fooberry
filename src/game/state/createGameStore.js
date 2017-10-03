@@ -1,5 +1,10 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import logger from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
+import thunkMiddleware from 'redux-thunk'
+
 import * as actions from './gameStoreActions';
+import npcSagas from './npcSagas';
 import CoordinateHelper from  '../utils/CoordinateHelper';
 import Tile from './Tile';
 import Point from './Point';
@@ -20,14 +25,26 @@ const initialState = {
         x: 7,
         y: 7,
         strength: 100
+      },
+      thief: {
+        x: 1,
+        y: 1,
+        strength: 100
       }
     }
 };
 
+const sagaMiddleware = createSagaMiddleware();
+
 let createGameStore = () => {
-    return createStore(boardReducer, initialState,
+    const store = createStore(boardReducer, initialState,
+        applyMiddleware(sagaMiddleware, thunkMiddleware, logger),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+    sagaMiddleware.run(npcSagas);
+    return store;
 };
+
 
 function boardReducer(state, action) {
   switch (action.type) {
@@ -35,6 +52,8 @@ function boardReducer(state, action) {
       return moveTo(state, action.payload.direction);
     case actions.CHANGE_RANDOM_TILE:
       return changeRandomTile(state);
+    case actions.NPC_THIEF_MOVE_ACTION:
+      return moveNPCThief(state, action);
     default:
       return state;
   }
@@ -69,7 +88,6 @@ function generateGrid(numRows, numCols) {
 
 function moveTo(state ,direction) {
   const currentPosition = new Point(state.atoms.player.x, state.atoms.player.y);
-  console.dir(currentPosition);
   let newPosition;
   switch (direction) {
     case 'north':
@@ -87,13 +105,24 @@ function moveTo(state ,direction) {
     default:
       newPosition = currentPosition;
   }
-  console.log(`New position is ${JSON.stringify(newPosition)}`);
   const newState =  Object.assign({}, state, {
     moves: [`Player moved ${direction} to ${newPosition.x},${newPosition.y}`, ...state.moves],
     atoms: Object.assign({}, state.atoms, {
       player: Object.assign({}, state.atoms.player, {
         x: newPosition.x,
         y: newPosition.y
+      })
+    })
+  });
+  return newState;
+}
+
+function moveNPCThief(state, action) {
+  const newState = Object.assign({}, state, {
+    atoms: Object.assign({}, state.atoms, {
+      thief: Object.assign({}, state.atoms.thief, {
+        x: action.payload.point.x,
+        y: action.payload.point.y
       })
     })
   });

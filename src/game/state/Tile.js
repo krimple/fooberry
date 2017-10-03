@@ -1,5 +1,3 @@
-import Player from './Player';
-
 export default class Tile {
   static TERRAIN_MOUNTAINS = {
     icon: 'icons/lorc/originals/svg/mountains.svg',
