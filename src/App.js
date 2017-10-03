@@ -43,6 +43,8 @@ class App extends Component {
       case ';':
         direction = 'east';
         break;
+      default:
+        console.log(`unprocessed keystroke`, event.key);
     }
     if (direction) {
       store.dispatch(actionCreators.moveActionCreator(direction));

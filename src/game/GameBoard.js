@@ -16,9 +16,11 @@ class GameBoard extends Component {
 
   render() {
     if (this.props.grid) {
-      let rows = this.props.grid.map((cell) => {
-        return <GameTile key={'grid-cell-' + cell.x + ',' + cell.y} tile={cell}/>;
-      });
+      for (let y = 0; y < Point.maxY; y++) {
+        for (let x = 0; x < Point.maxY; x++) {
+          return <GameTile key={'grid-cell-' + x + ',' + y} tile={grid.getIn([y, x])}/>;
+        }
+      }
 
       return (
           <Wrapper>{rows}</Wrapper>
