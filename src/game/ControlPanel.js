@@ -33,7 +33,7 @@ class ControlPanel extends Component {
 
 function mapStateToProps(state) {
   return {
-    moves: state.moves
+    moves: state.get('moves').toJS()
   };
 }
 

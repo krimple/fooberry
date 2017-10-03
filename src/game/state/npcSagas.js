@@ -3,8 +3,8 @@ import * as actions from './gameStoreActions';
 import * as actionCreators from './gameStoreActionCreators';
 import * as effects from 'redux-saga/effects';
 
-export const getPlayerPosition = state => (new Point(state.atoms.player.point.get('x'), state.atoms.player.point.get('y')));
-export const getThiefPosition = state => (new Point(state.atoms.thief.point.get('x'), state.atoms.thief.get('y')));
+export const getPlayerPosition = state => (new Point(state.getIn(['atoms', 'player', 'x']), state.getIn(['atoms', 'player', 'y'])));
+export const getThiefPosition = state => (new Point(state.getIn(['atoms', 'thief', 'x']), state.getIn(['atoms', 'thief', 'y'])));
 
 export default function *thiefNPCSaga() {
   while (true) {

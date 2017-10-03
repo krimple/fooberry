@@ -1,9 +1,8 @@
-import { createStore, applyMiddleware } from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-import combineReducers from 'redux-immutable';
 import thunkMiddleware from 'redux-thunk';
-import { fromJS, Map } from 'immutable';
+import {fromJS} from 'immutable';
 
 import * as actions from './gameStoreActions';
 import npcSagas from './npcSagas';
@@ -11,37 +10,42 @@ import Tile from './Tile';
 import Point from './Point';
 
 const numRows = 15,
-      numCols = 15;
+    numCols = 15;
 Point.configureCoordinateSystem(numCols, numRows);
 
-const initialState = fromJS({
-    numRows: numRows,
-    numCols: numCols,
-    moves: [],
-    grid:  generateGrid(numRows, numCols),
-    atoms: {
-      player: {
-        x: 7,
-        y: 7,
-        strength: 100
-      },
-      thief: {
-        x: 1,
-        y: 1,
-        strength: 100
-      }
+const preImmutableState = {
+  numRows: numRows,
+  numCols: numCols,
+  moves: [],
+  grid: generateGrid(numRows, numCols),
+  atoms: {
+    player: {
+      x: 7,
+      y: 7,
+      strength: 100
+    },
+    thief: {
+      x: 1,
+      y: 1,
+      strength: 100
     }
-});
+  }
+};
+
+console.log('creating immutable state from this object');
+console.dir(preImmutableState);
+
+const initialState = fromJS(preImmutableState);
 
 const sagaMiddleware = createSagaMiddleware();
 
 let createGameStore = () => {
-    const store = createStore(boardReducer, initialState,
-        applyMiddleware(sagaMiddleware, thunkMiddleware, logger),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  const store = createStore(boardReducer, initialState,
+      applyMiddleware(sagaMiddleware, thunkMiddleware, logger),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-    sagaMiddleware.run(npcSagas);
-    return store;
+  sagaMiddleware.run(npcSagas);
+  return store;
 };
 
 
@@ -66,21 +70,21 @@ function changeRandomTile(state) {
 }
 
 function generateGrid(numRows, numCols) {
-  const gridLength = numRows * numCols;
   const grid = [];
   for (let y = 0; y < numRows; y++) {
-   const row = [];
-   for (let x = 0; x < numCols; x++) {
-     row.push(new Tile(x, y));
-   }
-   grid.push(row);
+    const row = [];
+    for (let x = 0; x < numCols; x++) {
+      row.push(new Tile(x, y));
+    }
+    grid.push(row);
   }
   return grid;
 }
 
-function moveTo(state ,direction) {
+function moveTo(state, direction) {
   // temporary until we get our heads around the object graph
-  const currentPosition = Point.fromXY(state.getIn(['atoms', 'player', 'x']), state.getIn(['atoms', 'player', 'y'])).toJS();
+  const currentPosition = Point.fromXY(state.getIn(['atoms', 'player', 'x']), state.getIn(['atoms', 'player', 'y']));
+  console.log(`current position ${JSON.stringify(currentPosition)}`)
   let newPosition;
   switch (direction) {
     case 'north':
@@ -99,36 +103,19 @@ function moveTo(state ,direction) {
       newPosition = currentPosition;
   }
 
+  console.log(`next posited position ${JSON.stringify(newPosition)}`);
   return state.withMutations((state) => {
-    state.moves.withMutations((moves) => {
-      moves.unshift(`Player moved ${direction} to ${newPosition.x},${newPosition.y}`);
-    });
-    state.setIn(['grid', newPosition.getY(), newPosition.getX()],
-
-
-
-
-    atoms: Object.assign({
-
-      function moveNPCThief(state, action) {
-    const newState = Object.assign({}, state, {
-      atoms: Object.assign({}, state.atoms, {
-        thief: Object.assign({}, state.atoms.thief, {
-          x: action.payload.point.x,
-          y: action.payload.point.y
-        })
-      })
-    });
-    return newState;
-  }
-
-  export default createGameStore;
-}, state.atoms, {
-      player: Object.assign({}, state.atoms.player, {
-        x: newPosition.x,
-        y: newPosition.y
-      })
-    })
+    return state.setIn(['atoms', 'player', 'x'], newPosition.getX())
+        .setIn(['atoms', 'player', 'y'], newPosition.getY())
+        .setIn(['moves'], state.get('moves').insert(0, [`Player moved ${direction} to ${newPosition.x},${newPosition.y}`]));
   });
-  return newState;
 }
+
+function moveNPCThief(state, action) {
+  state.withMutations((state) => {
+    return state.setIn(['atoms', 'thief', 'x'], action.payload.point.x)
+        .setIn(['atoms', 'thief', 'y'], action.payload.point.y);
+  });
+}
+
+export default createGameStore;
