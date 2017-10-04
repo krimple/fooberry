@@ -115,9 +115,11 @@ function moveTo(state, direction) {
 }
 
 function moveNPCThief(state, action) {
-  state.withMutations((state) => {
-    return state.setIn(['atoms', 'thief', 'x'], action.payload.point.x)
-        .setIn(['atoms', 'thief', 'y'], action.payload.point.y);
+  console.log(`Moving thief to ${JSON.stringify(action.payload.point)}`);
+  return state.withMutations((state) => {
+    console.log(`setting thief location to ${action.payload.point.getX()},${action.payload.point.getY()}`);
+    return state.setIn(['atoms', 'thief', 'x'], action.payload.point.getX())
+        .setIn(['atoms', 'thief', 'y'], action.payload.point.getY());
   });
 }
 

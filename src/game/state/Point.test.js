@@ -11,7 +11,7 @@ describe('Point Spec', () => {
     expect(p.getY()).toBe(5);
   });
 
-  it('should move x properly', () => {
+  it('should set x properly', () => {
     const point1 = Point.fromXY(10, 10);
     const newX = point1.getX() + 1;
     const point2 = point1.setX(newX);
@@ -19,14 +19,14 @@ describe('Point Spec', () => {
     expect(point2.getX()).toBe(11);
   });
 
-  it('should move y properly', () => {
+  it('should set y properly', () => {
     const point1 = Point.fromXY(10, 10);
     const newY = point1.getY() + 1;
     const point2 = point1.setY(newY);
     console.log('point2 is', point2);
     expect(point2.getY()).toBe(11);
   });
-
+  
   it('should translate xy to position', () => {
     expect(Point.translateXYtoPos(5, 5)).toBe(55);
   });

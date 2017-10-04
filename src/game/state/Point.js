@@ -31,11 +31,11 @@ export default class Point {
   }
 
   static calcXDistanceTo(pointA, pointB) {
-    return pointB.x - pointA.x
+    return pointB.getX() - pointA.getX();
   };
 
   static calcYDistanceTo(pointA, pointB) {
-    return pointB.y - pointA.y;
+    return pointB.getY() - pointA.getY();
   }
 
   constructor(data) {
@@ -89,29 +89,9 @@ export default class Point {
     return posWithYAdjustments;
   }
 
-  /**
-   * Make sure to decrement / increment X then Y position and return new Point when done
-   * @param xDelta
-   * @param yDelta
-   * @returns {*}
-   */
-  move(xDelta, yDelta) {
-    let currentPoint = this;
-
-    for (let xIter = 0; xIter < Math.abs(xDelta); xIter++) {
-      currentPoint = new Point((xDelta < 0 ? currentPoint.incX(-1) : currentPoint.incX()).point.toJS());
-    }
-
-    for (let yIter = 0; yIter < Math.abs(yDelta); yIter++) {
-      currentPoint  = new Point((yDelta < 0 ? currentPoint.incY(-1): currentPoint.incY()).point.toJS());
-    }
-
-    return new Point(currentPoint);
-  }
-
   isSamePointAs(target) {
-    return target.x === this.x &&
-           target.y === this.y;
+    return target.getX() === this.getX() &&
+           target.getY() === this.getY();
   }
 }
 
