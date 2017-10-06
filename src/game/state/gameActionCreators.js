@@ -22,3 +22,10 @@ export function changeRandomTile() {
     type: actions.CHANGE_RANDOM_TILE
   };
 }
+
+export function updatePlayerInfo(playerInfo) {
+  return {
+    type: actions.UPDATE_PLAYER_INFO,
+    payload: playerInfo
+  };
+}

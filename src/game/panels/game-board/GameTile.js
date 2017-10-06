@@ -33,15 +33,15 @@ class GameTile extends Component {
   }
 
   render() {
-    if (this.props.player.x === this.props.tile.x &&
-        this.props.player.y === this.props.tile.y) {
+    if (this.props.player.get('x') === this.props.tile.x &&
+        this.props.player.get('y') === this.props.tile.y) {
      return (
          <PlayerIcon />
 
 
      );
-    } else if (this.props.thief.x === this.props.tile.x &&
-               this.props.thief.y === this.props.tile.y) {
+    } else if (this.props.thief.get('x') === this.props.tile.x &&
+               this.props.thief.get('y') === this.props.tile.y) {
       return (
           <NPCThiefIcon/>
       )
@@ -68,8 +68,8 @@ class GameTile extends Component {
 
 function mapStateToProps(state) {
   return {
-    player: state.atoms.player,
-    thief: state.atoms.thief
+    player: state.game.getIn(['atoms', 'player']),
+    thief: state.game.getIn(['atoms', 'thief'])
   };
 }
 
