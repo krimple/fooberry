@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import GameTile from './GameTile';
-import Point from './state/Point';
+import Point from '../../state/Point';
 import styled from 'styled-components';
 
 const Wrapper = styled.section`
@@ -38,7 +38,7 @@ class GameBoard extends Component {
 
 function mapStateToProps(state) {
   return {
-    grid: state.get('grid')
+    grid: state.game.get('grid')
   };
 }
 

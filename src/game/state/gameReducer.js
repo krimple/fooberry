@@ -1,16 +1,11 @@
-import {createStore, applyMiddleware} from 'redux';
-import logger from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
-import thunkMiddleware from 'redux-thunk';
-import {fromJS} from 'immutable';
+import { fromJS } from 'immutable';
 
 import * as actions from './gameStoreActions';
-import npcSagas from './npcSagas';
+
 import Tile from './Tile';
 import Point from './Point';
 
-const numRows = 15,
-    numCols = 15;
+const numRows = 15, numCols = 15;
 Point.configureCoordinateSystem(numCols, numRows);
 
 const preImmutableState = {
@@ -20,6 +15,7 @@ const preImmutableState = {
   grid: generateGrid(numRows, numCols),
   atoms: {
     player: {
+      name: 'FooBerry the Wise',
       x: 7,
       y: 7,
       strength: 100
@@ -32,24 +28,12 @@ const preImmutableState = {
   }
 };
 
-console.log('creating immutable state from this object');
-console.dir(preImmutableState);
+const gameInitialState = fromJS(preImmutableState);
 
-const initialState = fromJS(preImmutableState);
-
-const sagaMiddleware = createSagaMiddleware();
-
-let createGameStore = () => {
-  const store = createStore(boardReducer, initialState,
-      applyMiddleware(sagaMiddleware, thunkMiddleware, logger),
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-
-  sagaMiddleware.run(npcSagas);
-  return store;
-};
-
-
-function boardReducer(state, action) {
+const gameReducer = (state, action) => {
+  if (state === undefined) {
+    return gameInitialState;
+  }
   switch (action.type) {
     case actions.MOVE_ACTION:
       return moveTo(state, action.payload.direction);
@@ -57,10 +41,12 @@ function boardReducer(state, action) {
       return changeRandomTile(state);
     case actions.NPC_THIEF_MOVE_ACTION:
       return moveNPCThief(state, action);
+    case actions.UPDATE_PLAYER_INFO:
+      return updatePlayerInfo(state, action);
     default:
       return state;
   }
-}
+};
 
 function changeRandomTile(state) {
   const randomX = Math.floor(Math.random() * numCols);
@@ -83,8 +69,9 @@ function generateGrid(numRows, numCols) {
 
 function moveTo(state, direction) {
   // temporary until we get our heads around the object graph
-  const currentPosition = Point.fromXY(state.getIn(['atoms', 'player', 'x']), state.getIn(['atoms', 'player', 'y']));
-  console.log(`current position ${JSON.stringify(currentPosition)}`)
+  const currentPosition = Point.fromXY(
+      state.getIn(['atoms', 'player', 'x']),
+      state.getIn(['atoms', 'player', 'y']));
   let newPosition;
   switch (direction) {
     case 'north':
@@ -103,24 +90,35 @@ function moveTo(state, direction) {
       newPosition = currentPosition;
   }
 
-  console.log(`next posited position ${JSON.stringify(newPosition)}`);
   return state.withMutations((state) => {
-    return state.setIn(['atoms', 'player', 'x'], newPosition.getX())
-        .setIn(['atoms', 'player', 'y'], newPosition.getY())
+    const newX = newPosition.getX();
+    const newY = newPosition.getY();
+    return state.setIn(['atoms', 'player', 'x'], newX)
+        .setIn(['atoms', 'player', 'y'], newY)
         .setIn(['moves'], state.get('moves').insert(0,
             [`Player moved ${direction} to ${
-                state.getIn(['grid', newPosition.getY(), newPosition.getX()]).terrain.description} ${
-                newPosition.getX()},${newPosition.getY()}`]));
+                state.getIn(['grid', newY, newX]).terrain.description} ${
+                newX},${newY}`]));
   });
 }
 
 function moveNPCThief(state, action) {
-  console.log(`Moving thief to ${JSON.stringify(action.payload.point)}`);
   return state.withMutations((state) => {
-    console.log(`setting thief location to ${action.payload.point.getX()},${action.payload.point.getY()}`);
-    return state.setIn(['atoms', 'thief', 'x'], action.payload.point.getX())
-        .setIn(['atoms', 'thief', 'y'], action.payload.point.getY());
+    const thiefX = action.payload.point.getX();
+    const thiefY = action.payload.point.getY();
+    return state.setIn(['atoms', 'thief', 'x'], thiefX)
+        .setIn(['atoms', 'thief', 'y'], thiefY)
+        .setIn(['moves'], state.get('moves').insert(0,
+            [`Thief moved to ${thiefX},${thiefY}`]));
+   });
+}
+
+function updatePlayerInfo(state, action) {
+  debugger;
+  return state.withMutations(state => {
+    state.set('atoms',
+       state.get('atoms').merge({ player: action.payload.player}));
   });
 }
 
-export default createGameStore;
+export { gameInitialState, gameReducer };

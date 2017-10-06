@@ -68,8 +68,8 @@ class GameTile extends Component {
 
 function mapStateToProps(state) {
   return {
-    player: state.getIn(['atoms', 'player']),
-    thief: state.getIn(['atoms', 'thief'])
+    player: state.game.getIn(['atoms', 'player']),
+    thief: state.game.getIn(['atoms', 'thief'])
   };
 }
 
