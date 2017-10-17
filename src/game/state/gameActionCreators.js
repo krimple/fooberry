@@ -8,13 +8,14 @@ export function moveActionCreator(direction) {
     }
   };
 }
+
 export function moveNPCThiefCreator(point) {
   return {
     type: actions.NPC_THIEF_MOVE_ACTION,
     payload: {
       point: point
     }
-  }
+  };
 }
 
 export function changeRandomTile() {

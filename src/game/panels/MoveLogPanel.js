@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import PanelContainer from './PanelContainer';
 
@@ -10,18 +11,24 @@ class MoveLogPanel extends Component {
     });
 
     return (
-        <PanelContainer>
-          <h3>Moves</h3>
-          {moves}
-        </PanelContainer>
+      <PanelContainer>
+        <h3>Moves</h3>
+        {moves}
+      </PanelContainer>
     );
   }
 }
 
+MoveLogPanel.propTypes = {
+  game: PropTypes.object,
+  moves: PropTypes.array.required
+};
+
 function mapStateToProps(state) {
-    return {
-      moves: state.game.get('moves')
-    };
+  return {
+    moves: state.game.get('moves')
+  };
 }
+
 const panel = connect(mapStateToProps)(MoveLogPanel);
 export default panel;

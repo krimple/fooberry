@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import GameTile from './GameTile';
 import Point from '../../state/Point';
 import styled from 'styled-components';
@@ -25,14 +26,15 @@ class GameBoard extends Component {
       }
 
       return (
-          <Wrapper>{tiles}</Wrapper>
+        <Wrapper>{tiles}</Wrapper>
       );
     } else {
       return <p>No data...</p>;
     }
   }
 
-  drawSomething() {}
+  drawSomething() {
+  }
 
 }
 
@@ -41,5 +43,9 @@ function mapStateToProps(state) {
     grid: state.game.get('grid')
   };
 }
+
+GameBoard.propTypes = {
+  grid: PropTypes.object
+};
 
 export default connect(mapStateToProps)(GameBoard);

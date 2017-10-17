@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as actionCreators from '../state/gameActionCreators';
 import PanelContainer from './PanelContainer';
@@ -12,8 +13,8 @@ class PlayerInfoPanel extends Component {
   }
 
   componentWillMount() {
-     this.setState({
-       playerName: this.props.player.get('name')
+    this.setState({
+      playerName: this.props.player.get('name')
     });
 
   }
@@ -21,34 +22,40 @@ class PlayerInfoPanel extends Component {
   render() {
     console.log(this);
     return (
-        <PanelContainer>
-          <h3>{ this.props.playerName } Stats</h3>
-          <form onSubmit={this.handleOnSubmit}>
-            <label>Player Name</label>
-            <input id="name"
-                   value={this.state.playerName}
-                   onChange={this.handleNameChange} />
-            <button type="submit">Submit</button>
-          </form>
-        </PanelContainer>
+      <PanelContainer>
+        <h3>{this.props.playerName} Stats</h3>
+        <form onSubmit={this.handleOnSubmit}>
+          <label>Player Name</label>
+          <input id="name"
+            value={this.state.playerName}
+            onChange={this.handleNameChange}/>
+          <button type="submit">Submit</button>
+        </form>
+      </PanelContainer>
     );
   }
 
   handleNameChange(event) {
-    this.setState({ playerName: event.target.value });
+    this.setState({playerName: event.target.value});
   }
 
   handleOnSubmit(submitData) {
     this.props.dispatch(
       actionCreators.updatePlayerInfo({
         player: Object.assign({}, this.props.player.toJS(), {
-            name: this.state.playerName
+          name: this.state.playerName
         })
       }));
     submitData.preventDefault();
     return false;
   }
 }
+
+PlayerInfoPanel.propTypes = {
+  player: PropTypes.object,
+  playerName: PropTypes.string,
+  dispatch: PropTypes.func
+};
 
 function mapStateToProps(state) {
   return {

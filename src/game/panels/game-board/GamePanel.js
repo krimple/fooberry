@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import styled from 'styled-components';
 import GameBoard from './GameBoard';
 import * as actionCreators from '../../state/gameActionCreators';
@@ -23,15 +24,15 @@ class GamePanel extends Component {
     super(props);
     this.processKeyStroke = this.processKeyStroke.bind(this);
   }
-  
+
   render() {
     return (
-        <div>
-          <PanelSection>
-            <Heading>FOOBERRY - Player { this.props.playerName }</Heading>
-            <GameBoard />
-          </PanelSection>
-        </div>
+      <div>
+        <PanelSection>
+          <Heading>FOOBERRY - Player {this.props.playerName}</Heading>
+          <GameBoard/>
+        </PanelSection>
+      </div>
     );
   }
 
@@ -46,23 +47,23 @@ class GamePanel extends Component {
   processKeyStroke(event) {
     let direction;
     switch (event.key) {
-      case 'j':
-        direction = 'west';
-        break;
+    case 'j':
+      direction = 'west';
+      break;
 
-      case 'k':
-        direction = 'north';
-        break;
+    case 'k':
+      direction = 'north';
+      break;
 
-      case 'l':
-        direction = 'south';
-        break;
+    case 'l':
+      direction = 'south';
+      break;
 
-      case ';':
-        direction = 'east';
-        break;
-      default:
-        console.log(`unprocessed keystroke`, event.key);
+    case ';':
+      direction = 'east';
+      break;
+    default:
+      console.log('unprocessed keystroke', event.key);
     }
     if (direction) {
       this.props.dispatch(actionCreators.moveActionCreator(direction));
@@ -70,9 +71,18 @@ class GamePanel extends Component {
   }
 }
 
+GamePanel.propTypes = {
+  dispatch: PropTypes.func
+};
+
 function mapStateToProps(state) {
   return {
     playerName: state.game.getIn(['atoms', 'player', 'name'])
   };
 }
+
+GamePanel.propTypes = {
+  playerName: PropTypes.string
+};
+
 export default connect(mapStateToProps)(GamePanel);
