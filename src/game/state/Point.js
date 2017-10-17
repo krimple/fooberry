@@ -39,7 +39,6 @@ export default class Point {
     }*/
 
   calcXDistanceTo(targetPoint) {
-    vborked
     let fwdDistanceX = this.getX() - targetPoint.getX();
     let backDistanceX = 0 - this.getX() - targetPoint.getX();
     if (this.getX() > targetPoint.getX()) {
