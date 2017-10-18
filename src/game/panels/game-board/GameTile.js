@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import styled from 'styled-components';
 
 const TileIcon = styled.img`
@@ -26,7 +25,7 @@ const NPCThiefIcon = styled.img`
   opacity: 1.0;
 `;
 
-class GameTile extends Component {
+export default class GameTile extends Component {
 
   constructor(props) {
     super(props);
@@ -35,13 +34,13 @@ class GameTile extends Component {
   }
 
   render() {
-    if (this.props.player.get('x') === this.props.tile.x &&
-      this.props.player.get('y') === this.props.tile.y) {
+    if (this.props.playerLocation.x === this.props.tile.x &&
+      this.props.playerLocation.y === this.props.tile.y) {
       return (
         <PlayerIcon/>
       );
-    } else if (this.props.thief.get('x') === this.props.tile.x &&
-      this.props.thief.get('y') === this.props.tile.y) {
+    } else if (this.props.thiefLocation.x === this.props.tile.x &&
+      this.props.thiefLocation.y === this.props.tile.y) {
       return (
         <NPCThiefIcon/>
       );
@@ -50,8 +49,8 @@ class GameTile extends Component {
         <TileIcon alt={this.props.tile.description}
           className="tileIcon"
           src={this.props.tile.display()}
-          onMouseEnter={this.hover}
-          onMouseLeave={this.endHover}/>
+          onmouseenter={this.hover}
+          onmouseleave={this.endhover}/>
       );
     }
   }
@@ -68,15 +67,7 @@ class GameTile extends Component {
 
 GameTile.propTypes = {
   tile: PropTypes.object,
-  player: PropTypes.object,
-  thief: PropTypes.object
+  playerLocation: PropTypes.object,
+  thiefLocation : PropTypes.object
 };
 
-function mapStateToProps(state) {
-  return {
-    player: state.game.getIn(['atoms', 'player']),
-    thief: state.game.getIn(['atoms', 'thief'])
-  };
-}
-
-export default connect(mapStateToProps)(GameTile);
