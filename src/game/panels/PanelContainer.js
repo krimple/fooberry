@@ -1,10 +1,30 @@
-import styled from 'styled-components';
+import React, { Component } from 'react';
+import { Tab } from 'semantic-ui-react';
 
-const PanelContainer = styled.section`
-  padding: 40px;
-  width: 400px;
-  height: 280px;
-  border: 1px solid red;
-  background-color: #ccc;
-`;
-export default PanelContainer;
+import PlayerInfoPanel from './PlayerInfoPanel';
+import MoveLogPanel from './MoveLogPanel';
+
+const panes = [
+  { menuItem: 'Player Info',
+    render: function playerInfoTab () {
+      return <Tab.Pane>
+        <PlayerInfoPanel />
+      </Tab.Pane>;
+    }
+  },
+  { menuItem: 'Moves',
+    render: function movesTab() {
+      return <Tab.Pane>
+        <MoveLogPanel />
+      </Tab.Pane>;
+    }
+  }
+];
+
+export default class PanelContainer extends Component {
+
+  render() {
+    return <Tab panes={panes} />;
+  }
+}
+

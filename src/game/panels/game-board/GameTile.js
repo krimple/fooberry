@@ -4,24 +4,30 @@ import styled from 'styled-components';
 
 const TileIcon = styled.img`
   border: 1px solid white;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
+  max-height: 100px;
+  max-width: 100px;
   opacity: .2;
 `;
 
 const PlayerIcon = styled.img`
   background-image: url(icons/delapouite/originals/svg/walking-scout.svg);
   border: 1px solid black;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
+  max-height: 100px;
+  max-width: 100px;
   opacity: 1.0;
 `;
 
 const NPCThiefIcon = styled.img`
   background-image: url(icons/cathelineau/originals/svg/bad-gnome.svg);
   border: 1px solid black;
-  height: 40px;
-  width: 40px;
+  max-height: 100px;
+  max-width: 100px;
+  height: 50px;
+  width: 50px;
   opacity: 1.0;
 `;
 

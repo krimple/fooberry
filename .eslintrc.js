@@ -20,6 +20,9 @@ module.exports = {
     "jest"
   ],
   "rules": {
+    "react/displayName": [
+      0
+    ],
     "indent": [
       "error",
       2

@@ -5,10 +5,13 @@ import GameTile from './GameTile';
 import Point2 from '../../state/Point2';
 import styled from 'styled-components';
 
-const Wrapper = styled.section`
+const BoardWrapper = styled.section`
   font-size: 1.5em;
   line-height: 1.8em;
+  width: auto;
+  float: right;
   display: grid;
+  grid-gap: 1px;
   grid-auto-flow: row;
   grid-template-rows: repeat(15, 1fr);
   grid-template-columns: repeat(15, 1fr);
@@ -31,7 +34,7 @@ class GameBoard extends Component {
       }
 
       return (
-        <Wrapper>{tiles}</Wrapper>
+        <BoardWrapper>{tiles}</BoardWrapper>
       );
     } else {
       return <p>No data...</p>;

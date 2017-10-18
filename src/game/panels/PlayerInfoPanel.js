@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as actionCreators from '../state/gameActionCreators';
-import PanelContainer from './PanelContainer';
 
 class PlayerInfoPanel extends Component {
   constructor(props) {
@@ -20,9 +19,8 @@ class PlayerInfoPanel extends Component {
   }
 
   render() {
-    console.log(this);
     return (
-      <PanelContainer>
+      <div>
         <h3>{this.props.playerName} Stats</h3>
         <form onSubmit={this.handleOnSubmit}>
           <label>Player Name</label>
@@ -31,7 +29,7 @@ class PlayerInfoPanel extends Component {
             onChange={this.handleNameChange}/>
           <button type="submit">Submit</button>
         </form>
-      </PanelContainer>
+      </div>
     );
   }
 
@@ -56,6 +54,8 @@ PlayerInfoPanel.propTypes = {
   playerName: PropTypes.string,
   dispatch: PropTypes.func
 };
+
+PlayerInfoPanel.displayName = 'PlayerInfoPanel';
 
 function mapStateToProps(state) {
   return {

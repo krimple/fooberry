@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import PanelContainer from './PanelContainer';
 
 class MoveLogPanel extends Component {
 
@@ -11,10 +10,10 @@ class MoveLogPanel extends Component {
     });
 
     return (
-      <PanelContainer>
+      <div>
         <h3>Moves</h3>
         {moves}
-      </PanelContainer>
+      </div>
     );
   }
 }
