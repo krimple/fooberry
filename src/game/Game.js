@@ -1,41 +1,68 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import { NavLink, Route, Redirect } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
-import { history } from './state/createReduxStore';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import * as actionCreators from './state/gameActionCreators';
+import GameBoard from './panels/game-board/GameBoard';
+import PanelContainer from './panels/PanelContainer';
 
-import MoveLogPanel from './panels/MoveLogPanel';
-import PlayerInfoPanel from './panels/PlayerInfoPanel';
-import GamePanel from './panels/game-board/GamePanel';
-
-const Wrapper = styled.section`
+const GameWrapper = styled.section`
   padding-top: 70px;
   padding-left: 100px;
   vertical-align: top;
-  float: left;
-  padding-right: 50px;
   width: auto;
+  padding-right: 50px;
 `;
 
-export default class Game extends Component {
+const ControlPanels = styled.section`
+  float: left;
+  width: 400px;
+`;
+
+class Game extends Component {
+
+  constructor(props) {
+    super(props);
+    this.moveEast = this.moveEast.bind(this);
+    this.moveWest = this.moveWest.bind(this);
+    this.moveNorth = this.moveNorth.bind(this);
+    this.moveSouth = this.moveSouth.bind(this);
+  }
+
   render() {
     return (
-        <Wrapper>
-          <h1>Control Panel</h1>
-          <hr/>
-          <ConnectedRouter history={history}>
-            <div className="ControlPanels">
-              <NavLink className="link" activeClassName="active" to="/moves">Moves</NavLink> |
-              <NavLink className="link" activeClassName="active" to="/playerInfo">Player</NavLink> |
-              <NavLink className="link" activeClassName="active" to="/gameBoard">Game Board</NavLink>
-              <Route from="/" exact={true} to="/gameBoard"/>
-              <Route path="/moves" exact={true} component={MoveLogPanel}/>
-              <Route path="/playerInfo" exact={true} component={PlayerInfoPanel}/>
-              <Route path="/gameBoard" exact={true} component={GamePanel}/>
-            </div>
-          </ConnectedRouter>
-        </Wrapper>
+      <GameWrapper>
+        <ControlPanels>
+          <button onClick={this.moveWest}>W</button>
+          <button onClick={this.moveNorth}>N</button>
+          <button onClick={this.moveSouth}>S</button>
+          <button onClick={this.moveEast}>E</button>
+          <PanelContainer />
+        </ControlPanels>
+        <GameBoard />
+      </GameWrapper>
     );
+  }
+
+  moveNorth() {
+    this.props.dispatch(actionCreators.moveActionCreator('north'));
+  }
+
+  moveSouth() {
+    this.props.dispatch(actionCreators.moveActionCreator('south'));
+  }
+
+  moveEast() {
+    this.props.dispatch(actionCreators.moveActionCreator('east'));
+  }
+
+  moveWest() {
+    this.props.dispatch(actionCreators.moveActionCreator('west'));
   }
 }
 
+Game.propTypes = {
+  dispatch: PropTypes.func
+};
+
+export default connect()(Game);

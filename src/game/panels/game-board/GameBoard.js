@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import GameTile from './GameTile';
-import Point from '../../state/Point';
+import Point2 from '../../state/Point2';
 import styled from 'styled-components';
 
-const Wrapper = styled.section`
+const BoardWrapper = styled.section`
   font-size: 1.5em;
   line-height: 1.8em;
+  width: auto;
+  float: right;
   display: grid;
+  grid-gap: 1px;
   grid-auto-flow: row;
   grid-template-rows: repeat(15, 1fr);
   grid-template-columns: repeat(15, 1fr);
@@ -18,28 +22,48 @@ class GameBoard extends Component {
   render() {
     const tiles = [];
     if (this.props.grid) {
-      for (let y = 0; y < Point.maxY; y++) {
-        for (let x = 0; x < Point.maxY; x++) {
-          tiles.push(<GameTile key={'grid-cell-' + x + ',' + y} tile={this.props.grid.getIn([y, x])}/>);
+      for (let y = 0; y < Point2.maxY + 1; y++) {
+        for (let x = 0; x < Point2.maxX + 1; x++) {
+          tiles.push(
+            <GameTile key={'grid-cell-' + x + ',' + y}
+              tile={this.props.grid.getIn([y, x])}
+              playerLocation={this.props.playerLocation}
+              thiefLocation={this.props.thiefLocation} />
+          );
         }
       }
 
       return (
-          <Wrapper>{tiles}</Wrapper>
+        <BoardWrapper>{tiles}</BoardWrapper>
       );
     } else {
       return <p>No data...</p>;
     }
   }
 
-  drawSomething() {}
+  drawSomething() {
+  }
 
 }
 
 function mapStateToProps(state) {
   return {
-    grid: state.game.get('grid')
+    grid: state.game.get('grid'),
+    playerLocation: {
+      x: state.game.getIn(['atoms', 'player', 'point']).get('x'),
+      y: state.game.getIn(['atoms', 'player', 'point']).get('y')
+    },
+    thiefLocation: {
+      x: state.game.getIn(['atoms', 'thief', 'point']).get('x'),
+      y: state.game.getIn(['atoms', 'thief', 'point']).get('y')
+    }
   };
 }
+
+GameBoard.propTypes = {
+  grid: PropTypes.object,
+  playerLocation: PropTypes.object,
+  thiefLocation: PropTypes.object
+};
 
 export default connect(mapStateToProps)(GameBoard);

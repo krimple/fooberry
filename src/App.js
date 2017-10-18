@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import React, {Component} from 'react';
 import createGameStore from './game/state/createReduxStore';
-
+import {Provider} from 'react-redux';
 import Game from './game/Game';
+
 const store = createGameStore();
 
 // setInterval(() => {
@@ -13,9 +13,9 @@ const store = createGameStore();
 class App extends Component {
   render() {
     return (
-        <Provider store={store}>
-          <Game />
-        </Provider>
+      <Provider store={store}>
+        <Game/>
+      </Provider>
     );
   }
 }
