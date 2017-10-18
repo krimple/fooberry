@@ -15,7 +15,9 @@ export default function* thiefNPCSaga() {
     const xOffset = Math.sign(xyPosition.calcXDistanceTo(thiefxyPosition));
     const yOffset = Math.sign(xyPosition.calcYDistanceTo(thiefxyPosition));
     console.log(`current thief position ${JSON.stringify(thiefxyPosition)}`);
-    const newxyPosition = thiefxyPosition.moveXY(xOffset, yOffset);
+    console.log(`x and y offset for moves : ${xOffset} ${yOffset}`);
+    let newxyPosition = thiefxyPosition.incX(xOffset);
+    newxyPosition = newxyPosition.incY(yOffset);
     if (!newxyPosition.isSamePointAs(xyPosition)) {
       console.log(`Moving to ${JSON.stringify(newxyPosition)}`);
       yield effects.put(actionCreators.moveNPCThiefCreator(newxyPosition));

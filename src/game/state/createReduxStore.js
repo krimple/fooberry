@@ -1,5 +1,5 @@
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
-import logger from 'redux-logger';
+//import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import thunkMiddleware from 'redux-thunk';
 import createHistory from 'history/createHashHistory';
@@ -23,8 +23,7 @@ const createReduxStore = () => {
       applyMiddleware(
         routerMiddleware(history),
         sagaMiddleware,
-        thunkMiddleware,
-        logger),
+        thunkMiddleware),//, //logger),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
   sagaMiddleware.run(npcSagas);

@@ -4,6 +4,8 @@ export default class Point {
   static configureCoordinateSystem(maxX, maxY) {
     Point.maxX = maxX;
     Point.maxY = maxY;
+    Point.midwayX = maxX / 2;
+    Point.midwayY = maxY / 2;
   }
 
   static fromXY(x, y) {
@@ -38,27 +40,21 @@ export default class Point {
       return new Point(this.point.set('x', proposedX - Point.maxX).toJS());
     }*/
 
-  calcXDistanceTo(targetPoint) {
-    let fwdDistanceX = this.getX() - targetPoint.getX();
-    let backDistanceX = 0 - this.getX() - targetPoint.getX();
-    if (this.getX() > targetPoint.getX()) {
-      return fwdDistanceX;
-    } else if (this.getX() < targetPoint.getX()) {
-      return backDistanceX;
-    } else {
-      return 0;
+  calcXDistanceTo(proposedX) {
+    let currX = this.getX();
+    let dx = proposedX - currX;
+    if (Math.abs(dx) > Point.midwayX) {
+      dx = -1 * (Point.maxX - dx);
     }
+    return dx;
   }
 
-  calcYDistanceTo(targetPoint) {
-    let distanceY = targetPoint.getY() - this.getY();
-    if (distanceY > 0) {
-      return distanceY;
-    } else if (distanceY < 0) {
-      return distanceY - Point.maxY;
-    } else {
-      return 0;
-    }
+  calcYDistanceTo(proposedY) {
+    let currY = this.getY();
+    let dy = proposedY - currY;
+    let dyReverse = dy - Point.maxY;
+
+    return Math.abs(dy) < Math.abs(dyReverse) ? dy : dyReverse;
   }
 
   constructor(data) {
@@ -85,42 +81,43 @@ export default class Point {
     return new Point(this.point.set('y', yvalue).toJS());
   }
 
-  incX(amount) {
-    const proposedX = this.point.get('x') + (amount ? amount : 1);
-    if (proposedX >= 0 && proposedX < Point.maxX) {
-      return new Point(this.point.set('x', proposedX));
-    } else if (proposedX < 0) {
-      return new Point(this.point.set('x', Point.maxX + amount).toJS());
-    } else {
-      return new Point(this.point.set('x', proposedX - Point.maxX).toJS());
+  incX(amount = 1) {
+    const currentX = this.point.get('x');
+    const currentY = this.point.get('y');
+    let newX = currentX + amount;
+    if (newX > Point.maxX - 1) {
+      newX = newX - Point.maxX;
+    } else if (newX < 0) {
+      newX = Point.maxX + newX;
     }
+    return Point.fromXY(newX, currentY);
   }
 
-  incY(amount) {
-    const proposedY = this.point.get('y') + (amount ? amount : 1);
-    if (proposedY >= 0 && proposedY < Point.maxY) {
-      return new Point(this.point.set('y', proposedY));
-    } else if (proposedY < 0) {
-      return new Point(this.point.set('y', Point.maxY + amount).toJS());
-    } else {
-      return new Point(this.point.set('y', proposedY - Point.maxY).toJS());
+  incY(amount = 1) {
+    const currentX = this.point.get('x');
+    const currentY = this.point.get('y');
+    let newY = currentY + amount;
+    if (newY > Point.maxY - 1) {
+      newY = newY - Point.maxY;
+    } else if (newY < 0) {
+      newY = Point.maxY + newY;
     }
+    return Point.fromXY(currentX, newY);
   }
+
   moveXY(amountX, amountY) {
-    let posWithXAdjustments = this.incX(amountX);
-    let posWithYAdjustments = posWithXAdjustments.incY(amountY);
-    return posWithYAdjustments;
+    return this.incX(amountX).incY(amountY);
   }
 
   isSamePointAs(target) {
     return target.getX() === this.getX() &&
-           target.getY() === this.getY();
+      target.getY() === this.getY();
   }
 
 
-  calculateMoveNStepsToTarget(n, targetPoint) {
-    const xDirection = Math.sign(this.calcXDistanceTo(targetPoint));
-    const yDirection = Math.sign(this.calcYDistanceTo(targetPoint));
+  calculateMoveNStepsToTarget(n, targetX, targetY) {
+    const xDirection = Math.sign(this.calcXDistanceTo(targetX));
+    const yDirection = Math.sign(this.calcYDistanceTo(targetY));
     console.log(`x direction is ${xDirection}, y direction is ${yDirection}`);
 
     let point = this;
