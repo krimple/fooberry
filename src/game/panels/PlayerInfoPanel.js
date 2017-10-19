@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+
+import { Form, Button, Segment } from 'semantic-ui-react';
 import * as actionCreators from '../state/gameActionCreators';
 
 class PlayerInfoPanel extends Component {
@@ -20,16 +22,13 @@ class PlayerInfoPanel extends Component {
 
   render() {
     return (
-      <div>
+      <Segment textAlign="left">
         <h3>{this.props.playerName} Stats</h3>
-        <form onSubmit={this.handleOnSubmit}>
-          <label>Player Name</label>
-          <input id="name"
-            value={this.state.playerName}
-            onChange={this.handleNameChange}/>
-          <button type="submit">Submit</button>
-        </form>
-      </div>
+        <Form onSubmit={this.handleOnSubmit}>
+          <Form.Input label="Player" type="text" focus value={this.state.playerName} onChange={this.handleNameChange}/>
+          <Button type="submit">Submit</Button>
+        </Form>
+      </Segment>
     );
   }
 

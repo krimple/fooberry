@@ -106,11 +106,15 @@ function moveNPCThief(state) {
       thiefLocation.get('x'), thiefLocation.get('y'),
       playerLocation.get('x'), playerLocation.get('y'));
 
-    return state.setIn(['atoms', 'thief', 'point'], fromJS({
-      x: newCoordinates.x,
-      y: newCoordinates.y
-    }))
-      .setIn(['moves'], state.get('moves').insert(0, [`Thief moved to ${newCoordinates.x},${newCoordinates.y}`]));
+    if (newCoordinates.x === playerLocation.get('x') && newCoordinates.y === playerLocation.get('y')) {
+      return state;
+    } else {
+      return state.setIn(['atoms', 'thief', 'point'], fromJS({
+        x: newCoordinates.x,
+        y: newCoordinates.y
+      }))
+        .setIn(['moves'], state.get('moves').insert(0, [`Thief moved to ${newCoordinates.x},${newCoordinates.y}`]));
+    }
   });
 }
 

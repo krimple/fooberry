@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import GameTile from './GameTile';
 import Point2 from '../../state/Point2';
+import { Container } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const BoardWrapper = styled.section`
   font-size: 1.5em;
   line-height: 1.8em;
   width: auto;
-  float: right;
   display: grid;
   grid-gap: 1px;
   grid-auto-flow: row;
@@ -34,7 +34,9 @@ class GameBoard extends Component {
       }
 
       return (
-        <BoardWrapper>{tiles}</BoardWrapper>
+        <Container>
+          <BoardWrapper>{tiles}</BoardWrapper>
+        </Container>
       );
     } else {
       return <p>No data...</p>;

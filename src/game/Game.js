@@ -1,23 +1,12 @@
 import React, {Component} from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { Button, Grid, Segment, Menu, Container, Header } from 'semantic-ui-react';
+
 import * as actionCreators from './state/gameActionCreators';
 import GameBoard from './panels/game-board/GameBoard';
 import PanelContainer from './panels/PanelContainer';
-
-const GameWrapper = styled.section`
-  padding-top: 70px;
-  padding-left: 100px;
-  vertical-align: top;
-  width: auto;
-  padding-right: 50px;
-`;
-
-const ControlPanels = styled.section`
-  float: left;
-  width: 400px;
-`;
 
 class Game extends Component {
 
@@ -31,16 +20,36 @@ class Game extends Component {
 
   render() {
     return (
-      <GameWrapper>
-        <ControlPanels>
-          <button onClick={this.moveWest}>W</button>
-          <button onClick={this.moveNorth}>N</button>
-          <button onClick={this.moveSouth}>S</button>
-          <button onClick={this.moveEast}>E</button>
-          <PanelContainer />
-        </ControlPanels>
-        <GameBoard />
-      </GameWrapper>
+      <div>
+        <Menu fixed="top" inverted>
+          <Container fluid textAlign='left'>
+            <Menu.Item as='a' header>
+              <Header inverted="true">
+              Foobery
+              </Header>
+            </Menu.Item>
+          </Container>
+        </Menu>
+        <Container fluid style={{marginTop: '7em',  maxWidth: '1024px', width: '800px'}}>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={7}>
+                <Segment textAlign="center">
+                  <h3>Player Controls</h3>
+                  <Button icon="arrow left" onClick={this.moveWest} />
+                  <Button icon="arrow up" onClick={this.moveNorth} />
+                  <Button icon="arrow down" onClick={this.moveSouth} />
+                  <Button icon="arrow right" onClick={this.moveEast} />
+                </Segment>
+                <PanelContainer />
+              </Grid.Column>
+              <Grid.Column width={9}>
+                <GameBoard />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Container>
+      </div>
     );
   }
 

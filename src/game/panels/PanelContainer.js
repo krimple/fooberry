@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Segment } from 'semantic-ui-react';
 
 import PlayerInfoPanel from './PlayerInfoPanel';
 import MoveLogPanel from './MoveLogPanel';
@@ -24,7 +24,10 @@ const panes = [
 export default class PanelContainer extends Component {
 
   render() {
-    return <Tab panes={panes} />;
+    return <Segment textAlign="center">
+      <h3>Game Panels</h3>
+      <Tab panes={panes} />
+    </Segment>;
   }
 }
 
