@@ -23,6 +23,9 @@ module.exports = {
     "react/displayName": [
       0
     ],
+    "no-debugger": [
+      0
+    ],
     "indent": [
       "error",
       2
