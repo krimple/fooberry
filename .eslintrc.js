@@ -6,7 +6,7 @@ module.exports = {
     "jest": true
   },
 
-  "extends": ["eslint:recommended", "plugin:jest/recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended", "plugin:jest/recommended", "plugin:react/recommended", "plugin:redux-saga/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
@@ -17,7 +17,8 @@ module.exports = {
   },
   "plugins": [
     "react",
-    "jest"
+    "jest",
+    "redux-saga"
   ],
   "rules": {
     "react/displayName": [
