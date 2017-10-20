@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Button, Grid, Segment, Menu, Container, Header } from 'semantic-ui-react';
 
-import * as actionCreators from './state/gameActionCreators';
+import * as actionCreators from './state/reducers/player/playerActionCreators';
 import GameBoard from './panels/game-board/GameBoard';
 import PanelContainer from './panels/PanelContainer';
 
@@ -24,7 +24,7 @@ class Game extends Component {
         <Menu fixed="top" inverted>
           <Container fluid textAlign='left'>
             <Menu.Item as='a' header>
-              <Header inverted="true">
+              <Header inverted={true}>
               Foobery
               </Header>
             </Menu.Item>

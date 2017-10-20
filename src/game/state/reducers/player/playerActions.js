@@ -1,0 +1,3 @@
+export const MOVE_ACTION = 'Move Action';
+export const UPDATE_PLAYER_INFO = 'Update Player Info';
+export const FIRE_ACTION = 'Fire Action';

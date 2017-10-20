@@ -1,32 +1,37 @@
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 //import logger from 'redux-logger';
+
 import createSagaMiddleware from 'redux-saga';
+import * as sagas from './sagas';
 import thunkMiddleware from 'redux-thunk';
-import createHistory from 'history/createHashHistory';
-import {routerReducer, routerMiddleware} from 'react-router-redux';
 
-import {gameReducer} from './gameReducer';
-
-import npcSagas from './npcSagas';
-
-export const history = createHistory();
+import loggerReducer from './reducers/logger/loggerReducer';
+import npcReducer from './reducers/npcs/npcReducer';
+import gridReducer from './reducers/grid/gridReducer';
+import playerReducer from './reducers/player/playerReducer';
 
 const sagaMiddleware = createSagaMiddleware();
+
 const createReduxStore = () => {
   const store = createStore(
     combineReducers({
-      routing: routerReducer,
-      game: gameReducer
+      grid: gridReducer,
+      player: playerReducer,
+      logger: loggerReducer,
+      npcs: npcReducer
     }),
     undefined,
     compose(
       applyMiddleware(
-        routerMiddleware(history),
         sagaMiddleware,
         thunkMiddleware),//, //logger),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
-  sagaMiddleware.run(npcSagas);
+
+  
+  sagaMiddleware.run(sagas.npcMovementSaga);
+  sagaMiddleware.run(sagas.thiefNPCMovementLogSaga);
+  sagaMiddleware.run(sagas.playerMovementLogSaga);
   return store;
 };
 

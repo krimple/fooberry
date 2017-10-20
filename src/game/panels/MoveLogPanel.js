@@ -20,12 +20,12 @@ class MoveLogPanel extends Component {
 
 MoveLogPanel.propTypes = {
   game: PropTypes.object,
-  moves: PropTypes.object.isRequired
+  moves: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    moves: state.game.get('moves')
+    moves: state.logger.moves
   };
 }
 
