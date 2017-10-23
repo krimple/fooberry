@@ -1,3 +1,4 @@
+import { isImmutable } from 'immutable';
 export default class Point2 {
   constructor(x, y) {
     this.x = x;
@@ -43,6 +44,33 @@ export default class Point2 {
     return (Math.abs(target - curr));
   }
 
+  static equals(p1, p2) {
+    let p1x, p1y, p2x, p2y;
+    // get out early if one of the items is not defined/null
+    if (!p1 || !p2) {
+      return false;
+    }
+
+    // get each datapoint
+    if (isImmutable(p1)) {
+      p1x = p1.get('x');
+      p1y = p1.get('y');
+    } else {
+      p1x = p1.x;
+      p1y = p1.y;
+    }
+
+    if (isImmutable(p2)) {
+      p2x = p2.get('x');
+      p2y = p2.get('y');
+    } else {
+      p2x = p2.x;
+      p2y = p2.y;
+    }
+    return p1x === p2x && p1y === p2y;
+  }
+
+
   xdistance(x) {
     return (Math.abs(x - this.x));
   }
@@ -78,6 +106,10 @@ export default class Point2 {
     } else if (p2.y < this.y) {
       this.y = this.y - 1;
     }
+  }
+
+  toString() {
+    return `${this.x},${this.y}`;
   }
 }
 

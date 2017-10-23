@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import GameTile from './GameTile';
-import Point2 from '../../state/Point2';
 import { Container } from 'semantic-ui-react';
 import styled from 'styled-components';
+
+import AttackPanel from './AttackPanel';
+import GameTile from './GameTile';
+import Point2 from '../../state/Point2';
 
 const BoardWrapper = styled.section`
   font-size: 1.5em;
@@ -30,6 +32,7 @@ export default class GameBoard extends Component {
 
       return (
         <Container>
+          <AttackPanel />
           <BoardWrapper>{tiles}</BoardWrapper>
         </Container>
       );

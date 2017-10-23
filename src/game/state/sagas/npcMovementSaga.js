@@ -1,6 +1,7 @@
 import * as playerActions from '../reducers/player/playerActions';
 import * as npcActionCreators from '../reducers/npcs/npcActionCreators';
 import { take, put, select} from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 export function* npcMovementSaga() {
   try {
@@ -12,6 +13,7 @@ export function* npcMovementSaga() {
         x: playerLocation.get('x'),
         y: playerLocation.get('y')
       };
+      yield delay(200);
       yield put(npcActionCreators.moveNPCThiefCreator(playerPoint));
     }
   } catch(error) {

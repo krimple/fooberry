@@ -36,62 +36,11 @@ class GameTile extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    console.log('constructing new tile');
-    this.hover = this.hover.bind(this);
-    this.endHover = this.endHover.bind(this);
   }
 
-  /*  shouldComponentUpdate(nextProps) {
-    if (this.props.playerLocation.x === this.props.tile.x &&
-        this.props.playerLocation.y === this.props.tile.y) {
-      console.log(`tile ${this.props.tile.x},${this.props.tile.y} has a player`);
-      console.log(this.props);
-      console.dir(nextProps);
-    }
-    // if we have a player on our tile and they have moved - update
-    if (this.props.playerLocation.x === this.props.tile.x &&
-        this.props.playerLocation.y === this.props.tile.y &&
-        nextProps.playerLocation.x !== this.props.tile.x &&
-        nextProps.playerLocation.y !== this.props.tile.y) {
-      console.log(`player moved away from ${this.props.tile.x},${this.props.tile.y}`);
-      return true;
-    }
-
-    // if we don't have a player on our tile and they moved here - update
-    if (this.props.playerLocation.x !== this.props.tile.x &&
-        this.props.playerLocation.y !== this.props.tile.y &&
-        nextProps.playerLocation.x === this.props.tile.x &&
-        nextProps.playerLocation.y === this.props.tile.y) {
-      console.log(`player moved to ${nextProps.playerLocation.x},${nextProps.playerLocation.y}`);
-      return true;
-    }
-
-    // if we have a thief on our tile and they have moved - update
-    if (this.props.thiefLocation.x === this.props.tile.x &&
-        this.props.thiefLocation.y === this.props.tile.y &&
-        nextProps.thiefLocation.x !== this.props.tile.x &&
-        nextProps.thiefLocation.y !== this.props.tile.y) {
-      console.log(`thief moved away from ${this.props.tile.x},${this.props.tile.y}`);
-      return true;
-    }
-
-    // if we don't have a thief on our tile and they moved here - update
-    if (this.props.thiefLocation.x !== this.props.tile.x &&
-        this.props.thiefLocation.y !== this.props.tile.y &&
-        nextProps.thiefLocation.x === this.props.tile.x &&
-        nextProps.thiefLocation.y === this.props.tile.y) {
-      console.log(`thief moved to ${this.props.tile.x},${this.props.tile.y}`);
-      return true;
-    }
-
-    return false;
-
-  }
-*/
   render() {
     const key ='tile' + this.props.x + ',' + this.props.y;
 
-    console.log(`rendering ${key}`);
     if (this.props.isPlayerLocation) {
       return (
         <PlayerIcon key={key}/>
@@ -105,21 +54,10 @@ class GameTile extends React.PureComponent {
         <TileIcon alt={this.props.tile.description}
           key={key}
           className="tileIcon"
-          src={this.props.tile.display()}
-          onmouseenter={this.hover}
-          onmouseleave={this.endhover}/>
+          src={this.props.tile.display()} />
       );
     }
   }
-
-  hover() {
-    console.log(`entering ${this.props.tile.describe()}`);
-  }
-
-  endHover() {
-    console.log(`leaving ${this.props.tile.describe()}`);
-  }
-
 }
 
 function mapStateToProps(state, ownProps) {
