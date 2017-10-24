@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Header, Modal, Button, Segment } from 'semantic-ui-react';
+import {Header, Modal, Button, Segment} from 'semantic-ui-react';
 
 import * as playerActionCreators from '../../state/reducers/player/playerActionCreators';
 import * as gameActionCreators from '../../state/reducers/game/gameActionCreators';
@@ -10,8 +10,7 @@ class AttackPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      weapons: ['staff', 'bow', 'mace'],
-      weapon: 'staff'
+      weapon: null
     };
     this.selectWeapon = this.selectWeapon.bind(this);
     this.attack = this.attack.bind(this);
@@ -19,11 +18,16 @@ class AttackPanel extends Component {
   }
 
   render() {
-    if (!this.state) {
+    if (!this.state || !this.props.weapons) {
       return <p>Loading...</p>;
     }
-    const weaponOptions = this.state.weapons.map((weapon) => {
-      return <option key={weapon} value={weapon}>{weapon}</option>;
+
+    const weapons = this.props.weapons.toJS();
+    console.dir(weapons);
+
+    const weaponOptions = weapons.map((weapon, index) => {
+      return <option key={'weapon-' + index}
+        value={weapon.name}>{weapon.name}: D{weapon.damage} A{weapon.accuracy}</option>;
     });
 
     return (
@@ -42,7 +46,7 @@ class AttackPanel extends Component {
             <Button onClick={this.endAttack} floated='right'>End Attacks!</Button>
           </Modal.Description>
           <h2>Messages...</h2>
-          <Segment>{ this.props.toast }</Segment>
+          <Segment>{this.props.toast}</Segment>
         </Modal.Content>
       </Modal>
     );
@@ -65,6 +69,7 @@ class AttackPanel extends Component {
 
 AttackPanel.propTypes = {
   attacking: PropTypes.bool,
+  weapons: PropTypes.any,
   dispatch: PropTypes.func,
   toast: PropTypes.string
 };
@@ -73,7 +78,8 @@ function mapStateToProps(state) {
   console.log(`attack state: ${state.game.attacking}`);
   return {
     attacking: state.game.attacking,
-    toast: state.toast.activeToast
+    toast: state.toast.activeToast,
+    weapons: state.player.get('weapons')
   };
 }
 

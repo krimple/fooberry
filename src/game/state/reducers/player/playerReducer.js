@@ -6,7 +6,13 @@ const playerInitialState = fromJS({
   name: 'FooBerry the Wise',
   point: { x: 7, y: 7 },
   strength: 100,
-  weapon: null
+  weapon: null,
+  weapons: [
+    { name: 'mace', damage: 8, accuracy: .5 },
+    { name: 'sword', damage: 12, accuracy: .6 },
+    { name: 'bow', damage: 4, accuracy: .9 },
+    { name: 'axe', damage: 6, accuracy: .7}
+  ]
 });
 
 export default function playerReducer(state = playerInitialState, action) {

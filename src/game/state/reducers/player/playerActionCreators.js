@@ -8,6 +8,7 @@ export function move(direction) {
     }
   };
 }
+
 export function updatePlayerInfo(playerInfo) {
   return {
     type: actions.UPDATE_PLAYER_INFO,
