@@ -1,1 +1,2 @@
-export const NPC_THIEF_MOVE_ACTION = 'Move Thief';
+export const NPC_MOVE_ACTION = 'Move NPC';
+export const UPDATE_NPC_STRENGTH = 'Update NPC Strength';

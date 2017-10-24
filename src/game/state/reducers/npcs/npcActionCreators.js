@@ -1,9 +1,20 @@
 import * as actions from './npcActions';
-export function moveNPCThiefCreator(playerPoint) {
+export function moveNPC(npc, playerPoint) {
   return {
-    type: actions.NPC_THIEF_MOVE_ACTION,
+    type: actions.NPC_MOVE_ACTION,
     payload: {
+      npc: npc,
       playerPoint: playerPoint
+    }
+  };
+}
+
+export function updateStrength(npc, strength) {
+  return {
+    type: actions.UPDATE_NPC_STRENGTH,
+    payload: {
+      npc: npc,
+      newStrength: strength
     }
   };
 }

@@ -1,6 +1,6 @@
 import * as actions from './playerActions';
 
-export function moveActionCreator(direction) {
+export function move(direction) {
   return {
     type: actions.MOVE_ACTION,
     payload: {
@@ -15,3 +15,17 @@ export function updatePlayerInfo(playerInfo) {
   };
 }
 
+export function fireWeapon() {
+  return {
+    type: actions.FIRE_ACTION
+  };
+}
+
+export function chooseWeapon(weapon) {
+  return {
+    type: actions.CHOOSE_WEAPON,
+    payload: {
+      weapon: weapon
+    }
+  };
+}

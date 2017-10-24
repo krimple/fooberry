@@ -14,7 +14,7 @@ export function* npcMovementSaga() {
         y: playerLocation.get('y')
       };
       yield delay(200);
-      yield put(npcActionCreators.moveNPCThiefCreator(playerPoint));
+      yield put(npcActionCreators.moveNPC('thief', playerPoint));
     }
   } catch(error) {
     console.log(`Saga failed - ${error}`);

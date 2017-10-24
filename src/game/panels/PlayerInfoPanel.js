@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import { Form, Button, Segment } from 'semantic-ui-react';
+import { Label, Icon, Form, Button, Segment } from 'semantic-ui-react';
 import * as actionCreators from '../state/reducers/player/playerActionCreators';
 
 class PlayerInfoPanel extends Component {
@@ -17,17 +17,22 @@ class PlayerInfoPanel extends Component {
     this.setState({
       playerName: this.props.player.get('name')
     });
-
   }
 
   render() {
     return (
       <Segment textAlign="left">
-        <h3>{this.props.player.name} Stats</h3>
+        <h3>{this.props.player.name} Settings</h3>
         <Form onSubmit={this.handleOnSubmit}>
-          <Form.Input label="Player" type="text" focus value={this.state.playerName} onChange={this.handleNameChange}/>
+          <Form.Input label="Player" type="text"
+            focus value={this.state.playerName}
+            onChange={this.handleNameChange}/>
           <Button type="submit">Submit</Button>
         </Form>
+        <h3>Stats</h3>
+        <Label>
+          <Icon name='heartbeat'> Strength</Icon> {this.props.playerStrength}
+        </Label>
       </Segment>
     );
   }
@@ -47,6 +52,7 @@ class PlayerInfoPanel extends Component {
 PlayerInfoPanel.propTypes = {
   player: PropTypes.object,
   playerName: PropTypes.string,
+  playerStrength: PropTypes.number,
   dispatch: PropTypes.func
 };
 
@@ -54,7 +60,8 @@ PlayerInfoPanel.displayName = 'PlayerInfoPanel';
 
 function mapStateToProps(state) {
   return {
-    player: state.player
+    player: state.player,
+    playerStrength: state.player.get('strength')
   };
 }
 

@@ -1,1 +1,1 @@
-export const CHANGE_RANDOM_TILE = 'Fire Action';
+export const CHANGE_RANDOM_TILE = 'Change Random Tile';

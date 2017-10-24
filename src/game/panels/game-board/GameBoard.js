@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import { Container } from 'semantic-ui-react';
+import { Container, Segment } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import AttackPanel from './AttackPanel';
 import GameTile from './GameTile';
@@ -17,7 +19,7 @@ const BoardWrapper = styled.section`
   grid-template-columns: repeat(15, 1fr);
 `;
 
-export default class GameBoard extends Component {
+class GameBoard extends Component {
 
   render() {
     const tiles = [];
@@ -33,6 +35,7 @@ export default class GameBoard extends Component {
       return (
         <Container>
           <AttackPanel />
+          <Segment><span>{ this.props.toast }</span></Segment>
           <BoardWrapper>{tiles}</BoardWrapper>
         </Container>
       );
@@ -43,7 +46,18 @@ export default class GameBoard extends Component {
 
   drawSomething() {
   }
-
 }
+
+GameBoard.propTypes = {
+  toast: PropTypes.string
+};
+
+function mapStateToProps(state) {
+  return {
+    toast: state.toast.activeToast
+  };
+}
+
+export default connect(mapStateToProps)(GameBoard);
 
 

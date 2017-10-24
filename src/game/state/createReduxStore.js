@@ -33,10 +33,13 @@ const createReduxStore = () => {
 
 
 
+  sagaMiddleware.run(sagas.beginAttackSaga);
   sagaMiddleware.run(sagas.attackSaga);
   sagaMiddleware.run(sagas.playerMovementLogSaga);
   sagaMiddleware.run(sagas.npcMovementSaga);
   sagaMiddleware.run(sagas.thiefNPCMovementLogSaga);
+  sagaMiddleware.run(sagas.manageToastsSaga);
+  sagaMiddleware.run(sagas.toastTimeTickSaga);
   return store;
 };
 

@@ -10,7 +10,7 @@ export function* playerMovementLogSaga() {
       const playerLocation = state.player.get('point');
       const playerName = state.player.get('name');
       yield put(
-        loggerActionCreators.logMovementCreator(
+        loggerActionCreators.logMovement(
           `player ${playerName}`, playerLocation.get('x'), playerLocation.get('y'))
       );
     } catch (error) {

@@ -54,19 +54,19 @@ class Game extends Component {
   }
 
   moveNorth() {
-    this.props.dispatch(actionCreators.moveActionCreator('north'));
+    this.props.dispatch(actionCreators.move('north'));
   }
 
   moveSouth() {
-    this.props.dispatch(actionCreators.moveActionCreator('south'));
+    this.props.dispatch(actionCreators.move('south'));
   }
 
   moveEast() {
-    this.props.dispatch(actionCreators.moveActionCreator('east'));
+    this.props.dispatch(actionCreators.move('east'));
   }
 
   moveWest() {
-    this.props.dispatch(actionCreators.moveActionCreator('west'));
+    this.props.dispatch(actionCreators.move('west'));
   }
 }
 

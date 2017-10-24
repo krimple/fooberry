@@ -5,22 +5,26 @@ import * as actions from './npcActions';
 const npcCharactersInitialState = fromJS({
   thief: {
     point: {x: 1, y: 1},
-    strength: 100
+    strength: 100,
+    isAlive: true
   }
 });
 
 export default function npcReducer(state = npcCharactersInitialState, action) {
   switch(action.type) {
-  case actions.NPC_THIEF_MOVE_ACTION:
-    return moveNPCThief(state, action);
+  case actions.NPC_MOVE_ACTION:
+    return moveNPC(state, action);
+  case actions.UPDATE_NPC_STRENGTH:
+    return updateNPCStrength(state, action);
   default:
     return state;
   }
 }
 
-function moveNPCThief(state, action) {
+function moveNPC(state, action) {
   return state.withMutations((state) => {
-    const thiefLocation = state.getIn(['thief', 'point']);
+    const npc = action.payload.npc;
+    const thiefLocation = state.getIn([npc, 'point']);
     const playerPoint = action.payload.playerPoint;
 
     const newCoordinates = Point2.moveTracking(
@@ -39,3 +43,12 @@ function moveNPCThief(state, action) {
   });
 }
 
+function updateNPCStrength(state, action) {
+  return state.withMutations((state) => {
+    const npc = action.payload.npc;
+    const newStrength = action.payload.newStrength;
+    const isAlive = newStrength > 0;
+    state.setIn([npc, 'strength'], newStrength);
+    state.setIn([npc, 'isAlive'], isAlive);
+  });
+}

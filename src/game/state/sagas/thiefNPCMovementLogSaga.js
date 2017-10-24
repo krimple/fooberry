@@ -9,7 +9,7 @@ export function* thiefNPCMovementLogSaga() {
       const state = yield select();
       const thiefPoint = state.npcs.getIn(['thief', 'point']);
       yield put(
-        loggerActionCreators.logMovementCreator(
+        loggerActionCreators.logMovement(
           'thief', thiefPoint.get('x'), thiefPoint.get('y'))
       );
     }
