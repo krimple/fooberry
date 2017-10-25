@@ -36,7 +36,7 @@ class GameBoard extends Component {
       return (
         <Container>
           <AttackPanel />
-          <Message styles={{ height: '20px' }}>{ this.props.toast }</Message>
+          <Message>{ this.props.toast }</Message>
           <Segment textAlign='center'>
 
             <BoardWrapper>{tiles}</BoardWrapper>

@@ -18,3 +18,20 @@ export function updateStrength(npc, strength) {
     }
   };
 }
+
+export function loadNPCs() {
+  return function(dispatch) {
+    fetch('/npc-config.json')
+      .then((data) => {
+        return data.json();
+      }).then((data) => {
+        dispatch({
+          type: actions.LOAD_NPCS,
+          payload: {
+            data: data
+          }
+        });
+      })
+      .catch((e) => { console.log('failed npc load', e); });
+  };
+}

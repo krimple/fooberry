@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import createGameStore from './game/state/createReduxStore';
+import createReduxStore from './game/state/createReduxStore';
+import * as npcActionCreators from './game/state/reducers/npcs/npcActionCreators';
 import {Provider} from 'react-redux';
 import Game from './game/Game';
 
-const store = createGameStore();
+const store = createReduxStore();
+
+store.dispatch(npcActionCreators.loadNPCs());
 
 // setInterval(() => {
 //   console.log('updating tile', new Date());
@@ -12,11 +15,15 @@ const store = createGameStore();
 
 class App extends Component {
   render() {
-    return (
-      <Provider store={store}>
-        <Game/>
-      </Provider>
-    );
+    if (store) {
+      return (
+        <Provider store={store}>
+          <Game/>
+        </Provider>
+      );
+    } else {
+      return <p>Loading...</p>;
+    }
   }
 }
 

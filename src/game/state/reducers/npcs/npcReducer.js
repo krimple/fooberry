@@ -16,9 +16,19 @@ export default function npcReducer(state = npcCharactersInitialState, action) {
     return moveNPC(state, action);
   case actions.UPDATE_NPC_STRENGTH:
     return updateNPCStrength(state, action);
+  case actions.LOAD_NPCS:
+    return loadNPCs(state, action);
   default:
     return state;
   }
+}
+
+function loadNPCs(state, action) {
+  debugger;
+  const npcs = action.payload.data;
+  return state.withMutations((state) => {
+    state.set('npcs', npcs);
+  });
 }
 
 function moveNPC(state, action) {

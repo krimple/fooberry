@@ -28,7 +28,7 @@ const createReduxStore = () => {
     compose(
       applyMiddleware(
         sagaMiddleware,
-        thunkMiddleware),//, //logger),
+        thunkMiddleware),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
 
