@@ -46,7 +46,7 @@ class AttackPanel extends Component {
             <Button onClick={this.endAttack} floated='right'>End Attacks!</Button>
           </Modal.Description>
           <h2>Messages...</h2>
-          <Segment>{this.props.toast}</Segment>
+          <Segment textAlign='center'>{this.props.toast}</Segment>
         </Modal.Content>
       </Modal>
     );

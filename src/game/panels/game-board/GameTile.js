@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 
 const TileIcon = styled.img`
   border: 1px solid white;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   max-height: 50px;
   max-width: 50px;
   opacity: .2;
@@ -15,8 +15,8 @@ const TileIcon = styled.img`
 const PlayerIcon = styled.img`
   background-image: url(icons/delapouite/originals/svg/walking-scout.svg);
   border: 1px solid black;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   max-height: 50px;
   max-width: 50px;
   opacity: 1.0;
@@ -27,8 +27,8 @@ const NPCThiefIcon = styled.img`
   border: 1px solid black;
   max-height: 50px;
   max-width: 50px;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   opacity: 1.0;
 `;
 

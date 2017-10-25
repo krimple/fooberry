@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Container, Segment } from 'semantic-ui-react';
+import { Container, Segment, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -11,7 +11,8 @@ import Point2 from '../../state/Point2';
 const BoardWrapper = styled.section`
   font-size: 1.5em;
   line-height: 1.8em;
-  width: auto;
+  padding: 3px;
+  margin-right: 2em;
   display: grid;
   grid-gap: 1px;
   grid-auto-flow: row;
@@ -35,8 +36,11 @@ class GameBoard extends Component {
       return (
         <Container>
           <AttackPanel />
-          <Segment><span>{ this.props.toast }</span></Segment>
-          <BoardWrapper>{tiles}</BoardWrapper>
+          <Message styles={{ height: '20px' }}>{ this.props.toast }</Message>
+          <Segment textAlign='center'>
+
+            <BoardWrapper>{tiles}</BoardWrapper>
+          </Segment>
         </Container>
       );
     } else {
