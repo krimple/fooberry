@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import { Container, Segment, Message } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+import { Container} from 'semantic-ui-react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -20,7 +19,7 @@ const BoardWrapper = styled.section`
   grid-template-columns: repeat(15, 1fr);
 `;
 
-class GameBoard extends Component {
+export default class GameBoard extends Component {
 
   render() {
     const tiles = [];
@@ -36,11 +35,7 @@ class GameBoard extends Component {
       return (
         <Container>
           <AttackPanel />
-          <Message>{ this.props.toast }</Message>
-          <Segment textAlign='center'>
-
-            <BoardWrapper>{tiles}</BoardWrapper>
-          </Segment>
+          <BoardWrapper>{tiles}</BoardWrapper>
         </Container>
       );
     } else {
@@ -55,13 +50,4 @@ class GameBoard extends Component {
 GameBoard.propTypes = {
   toast: PropTypes.string
 };
-
-function mapStateToProps(state) {
-  return {
-    toast: state.toast.activeToast
-  };
-}
-
-export default connect(mapStateToProps)(GameBoard);
-
 

@@ -2,15 +2,8 @@ import {fromJS} from 'immutable';
 import Point2 from '../../Point2';
 import * as actions from './npcActions';
 
-const npcCharactersInitialState = fromJS({
-  thief: {
-    point: {x: 1, y: 1},
-    strength: 100,
-    isAlive: true
-  }
-});
 
-export default function npcReducer(state = npcCharactersInitialState, action) {
+export default function npcReducer(state = fromJS({}), action) {
   switch(action.type) {
   case actions.NPC_MOVE_ACTION:
     return moveNPC(state, action);
@@ -24,33 +17,32 @@ export default function npcReducer(state = npcCharactersInitialState, action) {
 }
 
 function loadNPCs(state, action) {
-  debugger;
   const npcs = action.payload.data;
   return state.withMutations((state) => {
-    state.set('npcs', npcs);
+    state.set('npcs', fromJS(npcs));
   });
 }
 
 function moveNPC(state, action) {
-  return state.withMutations((state) => {
-    const npc = action.payload.npc;
-    const thiefLocation = state.getIn([npc, 'point']);
-    const playerPoint = action.payload.playerPoint;
+  const npc = action.payload.npc;
+  const npcs = state.getIn(['npcs']);
 
-    const newCoordinates = Point2.moveTracking(
-      thiefLocation.get('x'), thiefLocation.get('y'),
-      playerPoint.x, playerPoint.y);
+  const npcLocation = npcs.getIn([npc, 'point']);
+  const playerPoint = action.payload.playerPoint;
 
-    // TODO clean this up and maybe move into moveTracking
-    if (newCoordinates.x === playerPoint.x && newCoordinates.y === playerPoint.y) {
-      return state;
-    } else {
-      return state.setIn(['thief', 'point'], fromJS({
-        x: newCoordinates.x,
-        y: newCoordinates.y
-      }));
-    }
-  });
+  const newCoordinates = Point2.moveTracking(
+    npcLocation.get('x'), npcLocation.get('y'),
+    playerPoint.x, playerPoint.y);
+  if (newCoordinates.x === playerPoint.x && newCoordinates.y === playerPoint.y) {
+    return state;
+  } else if (checkSamePointAsOtherNPCs(state, npc, newCoordinates.x, newCoordinates.y)) {
+    return state;
+  } else {
+    return state.setIn(['npcs', npc, 'point'], fromJS({
+      x: newCoordinates.x,
+      y: newCoordinates.y
+    }));
+  }
 }
 
 function updateNPCStrength(state, action) {
@@ -58,7 +50,20 @@ function updateNPCStrength(state, action) {
     const npc = action.payload.npc;
     const newStrength = action.payload.newStrength;
     const isAlive = newStrength > 0;
-    state.setIn([npc, 'strength'], newStrength);
-    state.setIn([npc, 'isAlive'], isAlive);
+    state.setIn(['npcs', npc, 'strength'], newStrength);
+    state.setIn(['npcs', npc, 'isAlive'], isAlive);
   });
+}
+
+function checkSamePointAsOtherNPCs(state, npc, x, y) {
+  const npcs = state.getIn(['npcs']);
+  npcs.forEach((item) => {
+    if (item.get('key') !== npc) {
+      if (item.getIn(['point','x']) === x && item.getIn(['point', 'y']) === y) {
+        return true;
+      }
+    }
+  });
+
+  return false;
 }

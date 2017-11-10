@@ -24,6 +24,7 @@
     "fs-extra": "3.0.1",
     "game-icons-font": "^0.1.2",
     "history": "^4.7.2",
+    "howler": "^2.0.5",
     "html-webpack-plugin": "2.29.0",
     "immutability-helper": "^2.4.0",
     "immutable": "^4.0.0-rc.4",

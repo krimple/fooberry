@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Tab, Segment } from 'semantic-ui-react';
+import { Menu, Sidebar, Tab } from 'semantic-ui-react';
 
 import PlayerInfoPanel from './PlayerInfoPanel';
 import MoveLogPanel from './MoveLogPanel';
+import PropTypes from 'prop-types';
 
 const panes = [
   { menuItem: 'Player Info',
@@ -24,10 +25,19 @@ const panes = [
 export default class PanelContainer extends Component {
 
   render() {
-    return <Segment textAlign="center">
-      <h3>Game Panels</h3>
-      <Tab panes={panes} />
-    </Segment>;
+    return (
+      <div>
+        <Sidebar as={Menu} visible={this.props.visible}
+          size="small" width='wide' animation='overlay' vertical>
+          <h3>Game Panels</h3>
+          <Tab panes={panes} />
+        </Sidebar>
+      </div>);
   }
 }
+
+PanelContainer.propTypes = {
+  visible: PropTypes.bool
+};
+
 

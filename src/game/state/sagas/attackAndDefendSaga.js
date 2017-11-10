@@ -3,12 +3,13 @@ import * as toastActionCreators from '../reducers/toast/toastActionCreators';
 import * as npcActionCreators from '../reducers/npcs/npcActionCreators';
 import {take, put, select} from 'redux-saga/effects';
 
-export function* attackSaga() {
+export function* attackAndDefendSaga() {
   try {
     while (true) {
       yield take(playerActions.FIRE_ACTION);
       const state = yield select();
       const weapon = state.player.weapon;
+      
       const isSuccessful = Math.random() > 0.5;
       if (isSuccessful) {
         const damageMultiplier = calculateDamage(weapon);

@@ -6,9 +6,12 @@ export function beginGame() {
   };
 }
 
-export function beginAttack() {
+export function beginAttack(npc) {
   return {
-    type: gameActions.BEGIN_ATTACK
+    type: gameActions.BEGIN_ATTACK,
+    payload: {
+      npc: npc
+    }
   };
 }
 

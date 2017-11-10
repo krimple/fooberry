@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import PlayerControlsPanel from './panels/PlayerControlsPanel';
+import MessagePanel from './panels/MessagePanel';
 
-import { Button, Grid, Segment, Menu, Container, Header } from 'semantic-ui-react';
+import { Sidebar, Button, Grid, Segment, Menu, Container, Header } from 'semantic-ui-react';
 
 import * as actionCreators from './state/reducers/player/playerActionCreators';
 import * as gameActionCreators from './state/reducers/game/gameActionCreators';
@@ -13,86 +15,80 @@ class Game extends Component {
 
   constructor(props) {
     super(props);
-    this.moveEast = this.moveEast.bind(this);
-    this.moveWest = this.moveWest.bind(this);
-    this.moveNorth = this.moveNorth.bind(this);
-    this.moveSouth = this.moveSouth.bind(this);
-    this.startGame = this.startGame.bind(this);
-    this.endGame = this.endGame.bind(this);
+
+    this.state = {
+      visible: false
+    };
+
+    this.toggleVisibility = () => { 
+      this.setState({ visible: !this.state.visible });
+    };
+
+    this.moveNorth = () => {
+      this.props.dispatch(actionCreators.move('north'));
+    };
+
+    this.moveSouth = () => {
+      this.props.dispatch(actionCreators.move('south'));
+    };
+
+    this.moveEast = () => {
+      this.props.dispatch(actionCreators.move('east'));
+    };
+
+    this.moveWest = () => {
+      this.props.dispatch(actionCreators.move('west'));
+    };
+
+    this.startGame = () => {
+      this.props.dispatch(gameActionCreators.beginGame());
+    };
+
+    this.endGame = () => {
+      this.props.dispatch(gameActionCreators.endGame());
+    };
   }
 
   render() {
-    let gameRunningSegment = (
-      <Segment>
-        <h3>Player Controls</h3>
-        <Button icon="arrow left" onClick={this.moveWest} />
-        <Button icon="arrow up" onClick={this.moveNorth} />
-        <Button icon="arrow down" onClick={this.moveSouth} />
-        <Button icon="arrow right" onClick={this.moveEast} />
-      </Segment>
-    );
-
     let startGameSegment = <Button onClick={ this.startGame }>Start Game</Button>;
-
     let endGameSegment = <Button onClick={ this.endGame }>End Game</Button>;
-
+ 
     return (
       <div>
         <Menu fixed="top" inverted>
           <Container fluid textAlign='left'>
             <Menu.Item as='a' header>
-              <Header inverted={true}>
-              Foobery
-              </Header>
+              <Header inverted={true}>Fooberry</Header>
+            </Menu.Item>
+            <Menu.Item as='a' onClick={this.toggleVisibility}>
+              Game Settings
             </Menu.Item>
           </Container>
         </Menu>
-        <Container fluid style={{marginTop: '7em',  maxWidth: '1024px', width: '800px'}}>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={7}>
-                <Segment textAlign="center" disabled={!this.props.gameRunning}>
-                  { gameRunningSegment }
-                </Segment>
-                <Segment textAlign="center">
-                  <h3>Game Control</h3>
-                  { this.props.gameRunning ? endGameSegment : startGameSegment }
-                </Segment>
-                <PanelContainer />
-              </Grid.Column>
-              <Grid.Column width={9}>
-                <GameBoard />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Container>
+        <Sidebar.Pushable as={Segment}>
+          <PanelContainer visible={this.state.visible } />
+          <Sidebar.Pusher>
+            <Container fluid style={{marginTop: '50px',  maxWidth: '1024px', width: '800px'}}>
+              Messages: <MessagePanel />
+              <PanelContainer />
+              <Grid>
+                <Grid.Row>
+                  <Grid.Column width={11}>
+                    <GameBoard />
+                  </Grid.Column>
+                  <Grid.Column width={5} textAlign='center'>
+                    { this.props.gameRunning ? endGameSegment : startGameSegment }
+                    <PlayerControlsPanel disabled={!this.props.gameRunning}/>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Container>
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
       </div>
     );
   }
 
-  moveNorth() {
-    this.props.dispatch(actionCreators.move('north'));
-  }
-
-  moveSouth() {
-    this.props.dispatch(actionCreators.move('south'));
-  }
-
-  moveEast() {
-    this.props.dispatch(actionCreators.move('east'));
-  }
-
-  moveWest() {
-    this.props.dispatch(actionCreators.move('west'));
-  }
-
-  startGame() {
-    this.props.dispatch(gameActionCreators.beginGame());
-  }
-
-  endGame() {
-    this.props.dispatch(gameActionCreators.endGame());
-  }
 }
 
 Game.propTypes = {

@@ -5,30 +5,41 @@ import { connect } from 'react-redux';
 
 const TileIcon = styled.img`
   border: 1px solid white;
-  height: 25px;
-  width: 25px;
+  height: 35px;
+  width: 35px;
   max-height: 50px;
   max-width: 50px;
   opacity: .2;
 `;
 
 const PlayerIcon = styled.img`
-  background-image: url(icons/delapouite/originals/svg/walking-scout.svg);
+  background-image: url(/icons/delapouite/originals/svg/walking-scout.svg);
   border: 1px solid black;
-  height: 25px;
-  width: 25px;
+  height: 35px;
+  width: 35px;
   max-height: 50px;
   max-width: 50px;
   opacity: 1.0;
 `;
 
-const NPCThiefIcon = styled.img`
-  background-image: url(icons/cathelineau/originals/svg/bad-gnome.svg);
+/*const NPCThiefIcon = styled.img`
+  background-image: url(/icons/cathelineau/originals/svg/bad-gnome.svg);
   border: 1px solid black;
   max-height: 50px;
   max-width: 50px;
-  height: 25px;
-  width: 25px;
+  height: 35px;
+  width: 35px;
+  opacity: 1.0;
+`;
+*/
+
+const NPCIcon = styled.img`
+  background-image: url(${props => props.icon});
+  border: 1px solid black;
+  max-height: 50px;
+  max-width: 50px;
+  height: 35px;
+  width: 35px;
   opacity: 1.0;
 `;
 
@@ -45,9 +56,10 @@ class GameTile extends React.PureComponent {
       return (
         <PlayerIcon key={key}/>
       );
-    } else if (this.props.isThiefLocation) {
+    } else if (this.props.isNPCLocation) {
+      console.log('rendering npc here', this.props.x, this.props.y, this.props.npcIcon);
       return (
-        <NPCThiefIcon key={key}/>
+        <NPCIcon key={key} icon={this.props.npcIcon}/>
       );
     } else {
       return (
@@ -61,15 +73,33 @@ class GameTile extends React.PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
+  let npcIcon = null, isNpcLocation = false;
+
+  if (state.npcs) {
+    const npcImmutables = state.npcs.getIn(['npcs']);
+    if (npcImmutables) {
+      npcImmutables.forEach(npc => {
+        const hitPoints = npc.get('hitPoints');
+        const npcLocation = npc.get('point');
+        // if the npc is alive, see if it occupies this tile
+        if (hitPoints > 0 &&
+          ownProps.x === npcLocation.get('x') &&
+          ownProps.y === npcLocation.get('y')) {
+          console.log('we have an npc', npc.get('name'), 'in', ownProps.x, ownProps.y);
+          npcIcon = npc.get('icon');
+          console.log(`the npc icon is ${npcIcon}`);
+          isNpcLocation = true;
+        }
+      });
+    }
+  }
   return {
     tile: state.grid[ownProps.y][ownProps.x],
     isPlayerLocation:
-      ownProps.x === state.player.getIn(['point']).get('x') &&
-      ownProps.y === state.player.getIn(['point']).get('y'),
-
-    isThiefLocation:
-      ownProps.x === state.npcs.getIn(['thief', 'point']).get('x') &&
-      ownProps.y === state.npcs.getIn(['thief', 'point']).get('y')
+    ownProps.x === state.player.getIn(['point']).get('x') &&
+    ownProps.y === state.player.getIn(['point']).get('y'),
+    isNPCLocation: isNpcLocation,
+    npcIcon: npcIcon
   };
 }
 
@@ -78,7 +108,8 @@ GameTile.propTypes = {
   y: PropTypes.number.isRequired,
   tile: PropTypes.object,
   isPlayerLocation: PropTypes.bool,
-  isThiefLocation : PropTypes.bool
+  isNPCLocation : PropTypes.bool,
+  npcIcon: PropTypes.string
 };
 
 export default connect(mapStateToProps)(GameTile);

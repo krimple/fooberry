@@ -32,22 +32,22 @@ class Tile {
   }
 }
 Tile.TERRAIN_MOUNTAINS = {
-  icon: 'icons/lorc/originals/svg/mountains.svg',
+  icon: '/icons/lorc/originals/svg/mountains.svg',
   description: 'Mountains'
 };
 
 Tile.TERRAIN_PLAINS = {
-  icon: 'icons/delapouite/originals/svg/forest.svg',
+  icon: '/icons/delapouite/originals/svg/forest.svg',
   description: 'Forest'
 };
 
 Tile.TERRAIN_WATER = {
-  icon: 'icons/sbed/originals/svg/water-drop.svg',
+  icon: '/icons/sbed/originals/svg/water-drop.svg',
   description: 'Water'
 };
 
 Tile.TERRAIN_VALLEY = {
-  icon: 'icons/lorc/originals/svg/valley.svg',
+  icon: '/icons/lorc/originals/svg/valley.svg',
   description: 'Valley'
 };
 
