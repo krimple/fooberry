@@ -9,24 +9,27 @@ export function* attackAndDefendSaga() {
       yield take(playerActions.FIRE_ACTION);
       const state = yield select();
       const weapon = state.player.weapon;
-      
+      const npc = state.npcs.getIn(['npcs', state.game.attackingNpc]);
+      const npcName = npc.get('name');
+
       const isSuccessful = Math.random() > 0.5;
       if (isSuccessful) {
         const damageMultiplier = calculateDamage(weapon);
         const damage = Math.floor(Math.random() * 100 * damageMultiplier);
-        const thiefStrength = state.npcs.getIn(['thief', 'strength']);
-        const newStrength = thiefStrength - damage;
-        if (newStrength > 0) {
+        const npcHitPoints = npc.getIn(['hitPoints']);
+        const newHitPoints = npcHitPoints  - damage;
+        console.log('********* ATTACKED NPC HAS ', newHitPoints, 'hit points left');
+        if (newHitPoints > 0) {
           yield put(toastActionCreators.sendToastMessage(
-            `Attack on Thief Succeeds! He loses ${damage} points, has ${newStrength} left.`));
-          yield put(npcActionCreators.updateStrength('thief', newStrength));
+            `Attack on ${ npcName } succeeds! ${ npcName } loses ${ damage } points, has ${ newHitPoints } left.`));
+          yield put(npcActionCreators.updateStrength(npc, newHitPoints));
         } else {
-          yield put(toastActionCreators.sendToastMessage('Attack on Thief kills theif! He dies...'));
-          yield put(npcActionCreators.updateStrength('thief', 0));
+          yield put(toastActionCreators.sendToastMessage(`${ npcName } is killed...`));
+          yield put(npcActionCreators.updateStrength(npc, 0));
         }
       }
       else {
-        yield put(toastActionCreators.sendToastMessage('YOU MISSED!!! HAHAH!'));
+        yield put(toastActionCreators.sendToastMessage(`YOU MISSED the ${ npcName } !!! HAHAH!`));
       }
     }
   } catch (error) {

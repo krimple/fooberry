@@ -14,7 +14,7 @@ export default function gameReducer(state = initialState, action) {
   case gameActions.BEGIN_GAME:
     return Object.assign({}, state, { gameRunning: true });
   case gameActions.BEGIN_ATTACK:
-    return Object.assign({}, state, { attacking: true, npc: action.payload.npc });
+    return Object.assign({}, state, { attacking: true, attackingNpc: action.payload.npc });
   case gameActions.TIME_TICK:
     return Object.assign({}, state, { tick: state.tick + 1 });
   case gameActions.ATTACK:

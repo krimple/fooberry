@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
+import Point2 from '../../state/Point2';
+
 const TileIcon = styled.img`
   border: 1px solid white;
   height: 35px;
@@ -75,29 +77,32 @@ class GameTile extends React.PureComponent {
 function mapStateToProps(state, ownProps) {
   let npcIcon = null, isNpcLocation = false;
 
-  if (state.npcs) {
-    const npcImmutables = state.npcs.getIn(['npcs']);
-    if (npcImmutables) {
-      npcImmutables.forEach(npc => {
-        const hitPoints = npc.get('hitPoints');
-        const npcLocation = npc.get('point');
-        // if the npc is alive, see if it occupies this tile
-        if (hitPoints > 0 &&
-          ownProps.x === npcLocation.get('x') &&
-          ownProps.y === npcLocation.get('y')) {
-          console.log('we have an npc', npc.get('name'), 'in', ownProps.x, ownProps.y);
-          npcIcon = npc.get('icon');
-          console.log(`the npc icon is ${npcIcon}`);
-          isNpcLocation = true;
-        }
-      });
-    }
+  if (!state.npcs || !state.player) {
+    return {};
+  }
+
+  const ownPoint = { x: ownProps.x, y: ownProps.y };
+  const playerPoint = Point2.toJSPoint(state.player.get('point'));
+
+  console.log('player point is', playerPoint);
+  const npcImmutables = state.npcs.getIn(['npcs']);
+  if (npcImmutables) {
+    npcImmutables.forEach(npc => {
+      const hitPoints = npc.get('hitPoints');
+      const npcPoint = Point2.toJSPoint(npc.get('point'));
+      console.log(`The npc ${npc} has ${hitPoints} hit points`);
+      // if the npc is alive, see if it occupies this tile
+      if (hitPoints > 0 &&
+        Point2.equals(ownPoint, npcPoint)) {
+        npcIcon = npc.get('icon');
+        isNpcLocation = true;
+      }
+    });
   }
   return {
     tile: state.grid[ownProps.y][ownProps.x],
     isPlayerLocation:
-    ownProps.x === state.player.getIn(['point']).get('x') &&
-    ownProps.y === state.player.getIn(['point']).get('y'),
+      Point2.equals(ownPoint, playerPoint),
     isNPCLocation: isNpcLocation,
     npcIcon: npcIcon
   };

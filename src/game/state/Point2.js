@@ -1,4 +1,5 @@
-import { isImmutable } from 'immutable';
+import { isImmutable, fromJS } from 'immutable';
+
 export default class Point2 {
   constructor(x, y) {
     this.x = x;
@@ -7,6 +8,24 @@ export default class Point2 {
 
   clone() {
     return new Point2(this.x, this.y);
+  }
+
+  static toJSPoint(immutablePoint) {
+    if (!immutablePoint) {
+      return null;
+    }
+
+    return {
+      x: immutablePoint.get('x'),
+      y: immutablePoint.get('y')
+    };
+  }
+
+  static toImmutablePoint(jsPoint) {
+    if (!jsPoint) {
+      return null;
+    }
+    return fromJS(jsPoint);
   }
 
   static setBounds(maxX, maxY) {

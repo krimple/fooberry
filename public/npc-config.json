@@ -10,6 +10,7 @@
     "startX": 1,
     "startY": 1,
     "hitPoints": 6,
+    "maxHitPoints": 6,
     "moveEvery": 2,
     "point": {
       "x": 3,
@@ -27,6 +28,7 @@
     "startX": 10,
     "startY": 10,
     "hitPoints": 7,
+    "maxHitPoints": 7,
     "moveEvery": 3,
     "point": {
       "x": 6,

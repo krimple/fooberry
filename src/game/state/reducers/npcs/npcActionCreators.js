@@ -1,10 +1,10 @@
 import * as actions from './npcActions';
-export function moveNPC(npc, playerPoint) {
+export function moveNPC(npc, coordinates) {
   return {
     type: actions.NPC_MOVE_ACTION,
     payload: {
       npc: npc,
-      playerPoint: playerPoint
+      coordinates: coordinates
     }
   };
 }

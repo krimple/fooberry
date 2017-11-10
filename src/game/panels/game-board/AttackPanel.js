@@ -32,10 +32,10 @@ class AttackPanel extends Component {
 
     return (
       <Modal open={this.props.attacking === true}>
-        <Modal.Header>Attack the Thief!</Modal.Header>
+        <Modal.Header>Oh no, a {this.props.npcName}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
-            <Header>You are attacking the Thief</Header>
+            <Header>You are attacking the { this.props.npcName }</Header>
             <p>Weapon:
               <select onChange={this.selectWeapon}
                 defaultValue={this.state.weapon}>
@@ -71,13 +71,15 @@ AttackPanel.propTypes = {
   attacking: PropTypes.bool,
   weapons: PropTypes.any,
   dispatch: PropTypes.func,
-  toast: PropTypes.string
+  toast: PropTypes.string,
+  npcName: PropTypes.string
 };
 
 function mapStateToProps(state) {
   console.log(`attack state: ${state.game.attacking}`);
   return {
     attacking: state.game.attacking,
+    npcName: state.npcs.getIn(['npcs', state.game.attackingNpc, 'name']),
     toast: state.toast.activeToast,
     weapons: state.player.get('weapons')
   };
