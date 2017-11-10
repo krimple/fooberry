@@ -30,3 +30,12 @@ export function chooseWeapon(weapon) {
     }
   };
 }
+
+export function updatePlayerStrength(hitPoints) {
+  return {
+    type: actions.UPDATE_PLAYER_STRENGTH,
+    payload: {
+      hitPoints: hitPoints
+    }
+  };
+}

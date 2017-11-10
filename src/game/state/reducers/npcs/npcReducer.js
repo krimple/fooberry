@@ -33,7 +33,6 @@ function moveNPC(state, action) {
 
 function updateNPCStrength(state, action) {
   return state.withMutations((state) => {
-    debugger;
     const npc = action.payload.npc;
     const newStrength = action.payload.newStrength;
     const isAlive = newStrength > 0;

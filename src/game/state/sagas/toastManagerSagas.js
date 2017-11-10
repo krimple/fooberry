@@ -26,13 +26,11 @@ export function* manageToastsSaga() {
   try {
     while(true) {
       yield take([actions.SEND_TOAST_MESSAGE, actions.LOWER_TOAST_MESSAGE]);
-      console.log('got an action');
       const state = yield select();
       const { pendingToasts, secondsLeft } = state.toast;
       // Do we have any pending messages, and are we done with our current message?
       if (pendingToasts.length > 0 && secondsLeft === 0) {
         // get the next message
-        console.log('sending next toast');
         yield put(actionCreators.nextToast());
       }
     }

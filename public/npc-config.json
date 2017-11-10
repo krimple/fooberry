@@ -3,10 +3,7 @@
     "name": "Thief",
     "key": "thief",
     "icon": "/icons/cathelineau/originals/svg/bad-gnome.svg",
-    "weapons": [
-        { "name": "knife", "damage": 4, "accuracy": 0.3 }
-    ],
-    "currentWeapon": "knife",
+    "weapon": "knife",
     "startX": 1,
     "startY": 1,
     "hitPoints": 6,
@@ -21,10 +18,7 @@
     "name": "Wyvern",
     "key": "wyvern",
     "icon": "/icons/lorc/originals/svg/wyvern.svg",
-    "weapons": [
-        { "name": "knife", "damage": 4, "accuracy": 0.3 }
-    ],
-    "currentWeapon": "knife",
+    "weapon": "knife",
     "startX": 10,
     "startY": 10,
     "hitPoints": 7,

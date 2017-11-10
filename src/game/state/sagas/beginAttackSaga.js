@@ -8,7 +8,6 @@ export function* beginAttackSaga() {
   try {
     while (true) {
       yield take([playerActions.MOVE_ACTION, npcActions.NPC_MOVE_ACTION]);
-      console.log('*********** BEGIN ATTACK SAGA EVALUATING *******');
       const state = yield select();
       const playerLocation = Point2.toJSPoint(state.player.get('point'));
       const npcs = state.npcs.getIn(['npcs']);
@@ -17,10 +16,7 @@ export function* beginAttackSaga() {
         const npc = jsnpcs[key];
         const npcPoint = npc.point;
         if (Point2.equals(playerLocation, npcPoint)) {
-          console.log('**** ATTACK MOUNTED WITH', key);
           yield put(gameActionCreators.beginAttack(key));
-        } else {
-          console.log('not same space as', key);
         }
       }
 

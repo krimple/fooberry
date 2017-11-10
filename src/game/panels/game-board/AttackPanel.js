@@ -23,7 +23,6 @@ class AttackPanel extends Component {
     }
 
     const weapons = this.props.weapons.toJS();
-    console.dir(weapons);
 
     const weaponOptions = weapons.map((weapon, index) => {
       return <option key={'weapon-' + index}
@@ -53,7 +52,6 @@ class AttackPanel extends Component {
   }
 
   attack() {
-    console.log(`Attacking with ${this.state.weapon}`);
     this.props.dispatch(playerActionCreators.chooseWeapon(this.state.weapon));
     this.props.dispatch(playerActionCreators.fireWeapon());
   }
@@ -76,7 +74,6 @@ AttackPanel.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(`attack state: ${state.game.attacking}`);
   return {
     attacking: state.game.attacking,
     npcName: state.npcs.getIn(['npcs', state.game.attackingNpc, 'name']),

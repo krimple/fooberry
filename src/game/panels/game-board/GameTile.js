@@ -59,7 +59,6 @@ class GameTile extends React.PureComponent {
         <PlayerIcon key={key}/>
       );
     } else if (this.props.isNPCLocation) {
-      console.log('rendering npc here', this.props.x, this.props.y, this.props.npcIcon);
       return (
         <NPCIcon key={key} icon={this.props.npcIcon}/>
       );
@@ -84,13 +83,11 @@ function mapStateToProps(state, ownProps) {
   const ownPoint = { x: ownProps.x, y: ownProps.y };
   const playerPoint = Point2.toJSPoint(state.player.get('point'));
 
-  console.log('player point is', playerPoint);
   const npcImmutables = state.npcs.getIn(['npcs']);
   if (npcImmutables) {
     npcImmutables.forEach(npc => {
       const hitPoints = npc.get('hitPoints');
       const npcPoint = Point2.toJSPoint(npc.get('point'));
-      console.log(`The npc ${npc} has ${hitPoints} hit points`);
       // if the npc is alive, see if it occupies this tile
       if (hitPoints > 0 &&
         Point2.equals(ownPoint, npcPoint)) {

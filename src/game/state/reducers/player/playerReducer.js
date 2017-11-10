@@ -5,7 +5,8 @@ import * as actions from './playerActions';
 const playerInitialState = fromJS({
   name: 'FooBerry the Wise',
   point: { x: 7, y: 7 },
-  strength: 100,
+  hitPoints: 100,
+  maxHitPoints: 100,
   weapon: null,
   weapons: [
     { name: 'mace', damage: 8, accuracy: .5 },
@@ -21,6 +22,8 @@ export default function playerReducer(state = playerInitialState, action) {
     return moveTo(state, action.payload.direction);
   case actions.UPDATE_PLAYER_INFO:
     return updatePlayerInfo(state, action);
+  case actions.UPDATE_PLAYER_STRENGTH:
+    return updatePlayerStrength(state, action.payload.newHitPoints);
   case actions.CHOOSE_WEAPON:
     return chooseWeapon(state, action);
   case actions.FIRE_ACTION:                        // marker action - saga picks it up
@@ -63,6 +66,12 @@ function moveTo(state, direction) {
 function updatePlayerInfo(state, action) {
   return state.withMutations(state => {
     state.set('name', action.payload.name);
+  });
+}
+
+function updatePlayerStrength(state, hitPoints) {
+  return state.withMutations(state => {
+    state.set('hitPoints', hitPoints);
   });
 }
 
