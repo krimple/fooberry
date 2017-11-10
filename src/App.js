@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import createReduxStore from './game/state/createReduxStore';
 import * as npcActionCreators from './game/state/reducers/npcs/npcActionCreators';
 import {Provider} from 'react-redux';
-import Game from './game/Game';
+//import Game from './game/Game';
+import GameHacker from './GameHacker';
 
 const store = createReduxStore();
 
@@ -18,7 +19,8 @@ class App extends Component {
     if (store) {
       return (
         <Provider store={store}>
-          <Game/>
+          <GameHacker />
+          { /* <Game/> */ }
         </Provider>
       );
     } else {
