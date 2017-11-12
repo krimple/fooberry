@@ -97,7 +97,7 @@ function mapStateToProps(state, ownProps) {
     });
   }
   return {
-    tile: state.grid[ownProps.y][ownProps.x],
+    tile: state.grid.getIn([ownProps.y,ownProps.x]),
     isPlayerLocation:
       Point2.equals(ownPoint, playerPoint),
     isNPCLocation: isNpcLocation,
