@@ -82,6 +82,10 @@ function calculateDamage(weapon) {
     return 1.8;
   case 'bow':
     return 0.5;
+  case 'claws':
+    return 0.3;
+  case 'knife':
+    return 0.2;
   default:
     return 0.1;
   }
