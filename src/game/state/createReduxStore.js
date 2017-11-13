@@ -42,6 +42,7 @@ const createReduxStore = () => {
   sagaMiddleware.run(sagas.toastTimeTickSaga);
   sagaMiddleware.run(sagas.startGameSoundEffectSaga);
   sagaMiddleware.run(sagas.playAndStopAttackMusicSaga);
+  sagaMiddleware.run(sagas.gameResetSaga);
   return store;
 };
 

@@ -39,3 +39,9 @@ export function updatePlayerStrength(hitPoints) {
     }
   };
 }
+
+export function initializePlayer() {
+  return {
+    type: actions.INITIALIZE_PLAYER
+  };
+}

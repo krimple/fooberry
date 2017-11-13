@@ -20,26 +20,38 @@ export function* npcMovementSaga() {
 
       const npcs = state.npcs.getIn(['npcs']).toArray();
 
+      const movesPending = [];
       for (let i = 0; i < npcs.length; i++) {
         const npcPointImmutable = npcs[i].get('point');
         const npcLocation = Point2.toJSPoint(npcPointImmutable);
+
         const newCoordinates = Point2.moveTracking(
           npcLocation.x, npcLocation.y, playerPoint.x, playerPoint.y);
-        if (!Point2.equals(newCoordinates, playerPoint)) {
-          if (!checkSamePointAsOtherNPCs(npcs, npcs[i], newCoordinates)) {
-            yield put(npcActionCreators.moveNPC(npcs[i].get('key'), newCoordinates));
-          }
+
+        const movingToPlayerPoint = Point2.equals(newCoordinates, playerPoint);
+        const movingToOtherNPCPoint = checkSamePointAsOtherNPCs(npcs, npcs[i], newCoordinates);
+        const otherNPCAlreadyRecorded = movesPending.find((move) => move.point.x === newCoordinates.x  && move.point.y === newCoordinates.y);
+
+        if (!movingToPlayerPoint && !movingToOtherNPCPoint && !otherNPCAlreadyRecorded) {
+          movesPending.push({ npc: npcs[i].get('key'), point: newCoordinates });
+        }
+      }
+
+      if (movesPending.length > 0) {
+        for (let i = 0; i < movesPending.length; i++) {
+          yield put(npcActionCreators.moveNPC(movesPending[i].npc, movesPending[i].point));
         }
       }
     }
   } catch (error) {
     console.log(`Saga failed - ${error}`);
+    throw error;
   }
 }
 
 function checkSamePointAsOtherNPCs(npcs, npc, point) {
   npcs.forEach((item) => {
-    if (item.get('key') !== npc) {
+    if (item.get('key') !== npc.get('key')) {
       if (Point2.equals(item.getIn(['point']), point)) {
         return true;
       }

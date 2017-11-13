@@ -5,3 +5,4 @@ export * from './attackAndDefendSaga';
 export * from './beginAttackSaga';
 export * from './toastManagerSagas';
 export * from './soundEffectsSaga';
+export * from './gameResetSaga';

@@ -10,7 +10,7 @@ class AttackPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      weapon: null
+      weapon: props.weapon
     };
     this.selectWeapon = this.selectWeapon.bind(this);
     this.attack = this.attack.bind(this);
@@ -24,9 +24,11 @@ class AttackPanel extends Component {
 
     const weapons = this.props.weapons.toJS();
 
-    const weaponOptions = weapons.map((weapon, index) => {
-      return <option key={'weapon-' + index}
-        value={weapon.name}>{weapon.name}: D{weapon.damage} A{weapon.accuracy}</option>;
+    const weaponKeys = Object.keys(weapons);
+    const weaponOptions = weaponKeys.map((key) => {
+      const weapon = weapons[key];
+      return <option key={'weapon-' + key }
+        value={key}>{key}: D{weapon.damage} A{weapon.accuracy}</option>;
     });
 
     return (
@@ -35,9 +37,10 @@ class AttackPanel extends Component {
         <Modal.Content>
           <Modal.Description>
             <Header>You are attacking the { this.props.npcName }</Header>
-            <p>Weapon:
+            <p>{ this.props.weapon }</p>
+            <p>Weapon:  
               <select onChange={this.selectWeapon}
-                defaultValue={this.state.weapon}>
+                defaultValue={this.props.weapon}>
                 {weaponOptions}
               </select>
             </p>
@@ -52,7 +55,14 @@ class AttackPanel extends Component {
   }
 
   attack() {
-    this.props.dispatch(playerActionCreators.chooseWeapon(this.state.weapon));
+    // TODO - fix null incoming weapon - not sure why
+    let chosenWeapon = null;
+    if (!this.state.weapon) {
+      chosenWeapon = this.props.weapons[0];
+    } else {
+      chosenWeapon = this.state.weapon;
+    }
+    this.props.dispatch(playerActionCreators.chooseWeapon(chosenWeapon));
     this.props.dispatch(playerActionCreators.fireWeapon());
   }
 
@@ -68,6 +78,7 @@ class AttackPanel extends Component {
 AttackPanel.propTypes = {
   attacking: PropTypes.bool,
   weapons: PropTypes.any,
+  weapon: PropTypes.string,
   dispatch: PropTypes.func,
   toast: PropTypes.string,
   npcName: PropTypes.string
@@ -78,7 +89,8 @@ function mapStateToProps(state) {
     attacking: state.game.attacking,
     npcName: state.npcs.getIn(['npcs', state.game.attackingNpc, 'name']),
     toast: state.toast.activeToast,
-    weapons: state.player.get('weapons')
+    weapons: state.player.get('weapons'),
+    weapon: state.player.get('weapon')
   };
 }
 

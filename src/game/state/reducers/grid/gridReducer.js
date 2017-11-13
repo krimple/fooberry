@@ -2,22 +2,20 @@ import Tile from '../../Tile';
 import Point2 from '../../Point2';
 import * as actions from './gridActions';
 import { fromJS } from 'immutable';
+
 const numRows = 15, numCols = 15;
 Point2.setBounds(numRows, numCols);
 const gridData = generateGrid(numRows, numCols);
 
-export default function gridReducer (state, action) {
-  if (state === undefined) {
-    return fromJS(gridData);
-  }
-
+export default function gridReducer (state = fromJS(gridData), action) {
   switch (action.type) {
+  case actions.RESET_GRID:
+    return fromJS(generateGrid(numRows, numCols));
   case actions.CHANGE_RANDOM_TILE:
     return changeRandomTile(state);
   default:
     return state;
   }
-
 }
 
 function changeRandomTile(state) {

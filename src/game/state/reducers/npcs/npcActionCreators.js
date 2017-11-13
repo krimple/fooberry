@@ -9,11 +9,11 @@ export function moveNPC(npc, coordinates) {
   };
 }
 
-export function updateStrength(npc, strength) {
+export function updateStrength(npcKey, strength) {
   return {
     type: actions.UPDATE_NPC_STRENGTH,
     payload: {
-      npc: npc,
+      npcKey: npcKey,
       newStrength: strength
     }
   };
@@ -33,5 +33,14 @@ export function loadNPCs() {
         });
       })
       .catch((e) => { console.log('failed npc load', e); });
+  };
+}
+
+export function killNPC(npcKey) {
+  return {
+    type: actions.KILL_NPC,
+    payload: {
+      npcKey: npcKey
+    }
   };
 }
