@@ -30,11 +30,12 @@ function* attackAndDefend(player, npc) {
     const newNPCHitPoints = yield call(scoreAttack, player, npc);
     if (newNPCHitPoints === 0) {
       yield put(npcActionCreators.killNPC(npcKey));
+      yield put(gameActionCreators.endAttack());
     } else if(newNPCHitPoints > 0) {
       yield put(npcActionCreators.updateStrength(npcKey, newNPCHitPoints));
     } else {
       // TODO we missed!
-      console.log('Player missed!');
+      toastActionCreators.sendToastMessage(`${player.get('name')} swung with the ${player.getIn(['weapons', player.get('weapon')])} and missed!`);
     }
 
     // defend against npc attack if npc and player have hit points left
