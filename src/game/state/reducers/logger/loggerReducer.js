@@ -7,8 +7,10 @@ const loggerInitialState = {
 export default function gameReducer (state = loggerInitialState, action) {
   switch (action.type) {
   case actions.LOG_MOVE_ACTION:
-    state.moves = [`Moved ${action.payload.character} to ${action.payload.x},${action.payload.y}`, ...state.moves];
-    return state;
+    console.log(`received log move: ${JSON.stringify(action.payload.character)}`);
+    return Object.assign({}, state, {
+      moves: [`Moved ${action.payload.character} to ${action.payload.x},${action.payload.y}`, ...state.moves]
+    });
   default:
     return state;
   }

@@ -32,17 +32,16 @@ const createReduxStore = () => {
         thunkMiddleware),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
-
-
-  //sagaMiddleware.run(sagas.beginAttackSaga);
-  //sagaMiddleware.run(sagas.attackAndDefendSaga);
-  //sagaMiddleware.run(sagas.playerMovementLogSaga);
-  //sagaMiddleware.run(sagas.npcMovementSaga);
-  //sagaMiddleware.run(sagas.npcMovementLogSaga);
-  //sagaMiddleware.run(sagas.manageToastsSaga);
-  //sagaMiddleware.run(sagas.toastTimeTickSaga);
-  //sagaMiddleware.run(sagas.startGameSoundEffectSaga);
-  //sagaMiddleware.run(sagas.playAndStopAttackMusicSaga);
+    // sagaMiddleware.run(sagas.beginAttackSaga);
+    // sagaMiddleware.run(sagas.attackAndDefendSaga);
+    // sagaMiddleware.run(sagas.playerMovementLogSaga);
+    // sagaMiddleware.run(sagas.npcMovementSaga);
+    // sagaMiddleware.run(sagas.npcMovementLogSaga);
+    // sagaMiddleware.run(sagas.manageToastsSaga);
+    // sagaMiddleware.run(sagas.toastTimeTickSaga);
+    // sagaMiddleware.run(sagas.startGameSoundEffectSaga);
+    // sagaMiddleware.run(sagas.playAndStopAttackMusicSaga);
+    // sagaMiddleware.run(sagas.gameResetSaga);
   return store;
 };
 

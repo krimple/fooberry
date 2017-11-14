@@ -10,6 +10,8 @@ export default function npcReducer(state = fromJS({}), action) {
     return updateNPCStrength(state, action);
   case actions.LOAD_NPCS:
     return loadNPCs(state, action);
+  case actions.KILL_NPC:
+    return killNPC(state, action);
   default:
     return state;
   }
@@ -33,11 +35,17 @@ function moveNPC(state, action) {
 
 function updateNPCStrength(state, action) {
   return state.withMutations((state) => {
-    const npc = action.payload.npc;
+    const npcKey = action.payload.npcKey;
     const newStrength = action.payload.newStrength;
-    const isAlive = newStrength > 0;
-    state.setIn(['npcs', npc, 'hitPoints'], newStrength);
-    state.setIn(['npcs', npc, 'isAlive'], isAlive);
+    state.setIn(['npcs', npcKey, 'hitPoints'], newStrength);
+  });
+}
+
+function killNPC(state, action) {
+  const npcKey = action.payload.npcKey;
+  return state.withMutations((state) => {
+    state.setIn(['npcs', npcKey, 'isAlive'], false);
+    state.removeIn(['npcs', npcKey]);
   });
 }
 
