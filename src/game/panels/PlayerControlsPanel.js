@@ -1,24 +1,24 @@
 import React from 'react';
-import * as actionCreators from '../state/reducers/player/playerActionCreators';
+import { movePlayerActionCreators } from '../redux';
 import { connect } from 'react-redux';
 import { Button, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const PlayerControlsPanel = (props) => {
   const moveNorth = () => {
-    props.dispatch(actionCreators.move('north'));
+    props.dispatch(movePlayerActionCreators.movePlayer('north'));
   };
 
   const moveSouth = () => {
-    props.dispatch(actionCreators.move('south'));
+    props.dispatch(movePlayerActionCreators.movePlayer('south'));
   };
 
   const moveEast = () => {
-    props.dispatch(actionCreators.move('east'));
+    props.dispatch(movePlayerActionCreators.movePlayer('east'));
   };
 
   const moveWest = () => {
-    props.dispatch(actionCreators.move('west'));
+    props.dispatch(movePlayerActionCreators.movePlayer('west'));
   };
 
   return (<Segment textAlign={'center'}>

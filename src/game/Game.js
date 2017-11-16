@@ -6,8 +6,8 @@ import MessagePanel from './panels/MessagePanel';
 
 import { Sidebar, Button, Grid, Segment, Menu, Container, Header } from 'semantic-ui-react';
 
-import * as actionCreators from './state/reducers/player/playerActionCreators';
-import * as gameActionCreators from './state/reducers/game/gameActionCreators';
+import {  playerActionCreators, gameActionCreators, gameResetActionCreator } from './redux';
+
 import GameBoard from './panels/game-board/GameBoard';
 import PanelContainer from './panels/PanelContainer';
 
@@ -25,23 +25,23 @@ class Game extends Component {
     };
 
     this.moveNorth = () => {
-      this.props.dispatch(actionCreators.move('north'));
+      this.props.dispatch(playerActionCreators.move('north'));
     };
 
     this.moveSouth = () => {
-      this.props.dispatch(actionCreators.move('south'));
+      this.props.dispatch(playerActionCreators.move('south'));
     };
 
     this.moveEast = () => {
-      this.props.dispatch(actionCreators.move('east'));
+      this.props.dispatch(playerActionCreators.move('east'));
     };
 
     this.moveWest = () => {
-      this.props.dispatch(actionCreators.move('west'));
+      this.props.dispatch(playerActionCreators.move('west'));
     };
 
     this.startGame = () => {
-      this.props.dispatch(gameActionCreators.beginGame());
+      this.props.dispatch(gameResetActionCreator.resetGame());
     };
 
     this.endGame = () => {

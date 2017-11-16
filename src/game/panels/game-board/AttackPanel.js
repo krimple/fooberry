@@ -3,27 +3,19 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Header, Modal, Button, Segment} from 'semantic-ui-react';
 
-import * as playerActionCreators from '../../state/reducers/player/playerActionCreators';
-import * as gameActionCreators from '../../state/reducers/game/gameActionCreators';
+import { attackDefendCreators, playerActionCreators, gameActionCreators } from '../../redux';
 
 class AttackPanel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      weapon: props.weapon
-    };
-    this.selectWeapon = this.selectWeapon.bind(this);
-    this.attack = this.attack.bind(this);
-    this.endAttack = this.endAttack.bind(this);
-  }
+  state = {
+    weapon: this.props.weapon
+  };
 
-  render() {
+  render = () => {
     if (!this.state || !this.props.weapons) {
       return <p>Loading...</p>;
     }
 
-    const weapons = this.props.weapons.toJS();
-
+    const weapons = this.props.weapons;
     const weaponKeys = Object.keys(weapons);
     const weaponOptions = weaponKeys.map((key) => {
       const weapon = weapons[key];
@@ -33,10 +25,10 @@ class AttackPanel extends Component {
 
     return (
       <Modal open={this.props.attacking === true}>
-        <Modal.Header>Oh no, a {this.props.npcName}</Modal.Header>
+        <Modal.Header>Oh no, a {this.props.attackingNpcName}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
-            <Header>You are attacking the { this.props.npcName }</Header>
+            <Header>You are attacking the { this.props.attackingNpcName }</Header>
             <p>{ this.props.weapon }</p>
             <p>Weapon:  
               <select onChange={this.selectWeapon}
@@ -52,9 +44,9 @@ class AttackPanel extends Component {
         </Modal.Content>
       </Modal>
     );
-  }
+  };
 
-  attack() {
+  attack = () => {
     // TODO - fix null incoming weapon - not sure why
     let chosenWeapon = null;
     if (!this.state.weapon) {
@@ -62,15 +54,15 @@ class AttackPanel extends Component {
     } else {
       chosenWeapon = this.state.weapon;
     }
-    this.props.dispatch(playerActionCreators.chooseWeapon(chosenWeapon));
-    this.props.dispatch(playerActionCreators.fireWeapon());
+    this.props.dispatch(playerActionCreators.choosePlayerWeapon(chosenWeapon));
+    this.props.dispatch(attackDefendCreators.attackDefend(this.props.attackingNpc.key));
   }
 
-  selectWeapon(event) {
+  selectWeapon = (event) => {
     this.setState({weapon: event.target.value});
   }
 
-  endAttack() {
+  endAttack = () => {
     this.props.dispatch(gameActionCreators.endAttack());
   }
 }
@@ -85,12 +77,24 @@ AttackPanel.propTypes = {
 };
 
 function mapStateToProps(state) {
+  const additionalProps = {};
+  if (state.npcs && state.game.attacking) {
+    const npc = state.npcs[state.game.attackingNpc];
+    additionalProps.attackingNpc = npc;
+    additionalProps.attacking = state.game.attacking;
+    additionalProps.attackingNpcName = npc.name; 
+
+  } else {
+    additionalProps.attackingNpc = null;
+    additionalProps.attackingNpcName = '';
+    additionalProps.attacking = false;
+  }
+
   return {
-    attacking: state.game.attacking,
-    npcName: state.npcs.getIn(['npcs', state.game.attackingNpc, 'name']),
+    ...additionalProps,
     toast: state.toast.activeToast,
-    weapons: state.player.get('weapons'),
-    weapon: state.player.get('weapon')
+    weapons: state.player.weapons,
+    weapon: state.player.weapon
   };
 }
 

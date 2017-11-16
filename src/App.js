@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import createReduxStore from './game/state/createReduxStore';
-import * as npcActionCreators from './game/state/reducers/npcs/npcActionCreators';
+import createReduxStore from './game/redux/createReduxStore';
+import { npcActionCreators } from './game/redux';
 import {Provider} from 'react-redux';
 import Game from './game/Game';
 

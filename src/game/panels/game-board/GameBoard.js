@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import AttackPanel from './AttackPanel';
 import GameTile from './GameTile';
-import Point2 from '../../state/Point2';
+import Point from '../../Point';
 
 const BoardWrapper = styled.section`
   font-size: 1.5em;
@@ -23,9 +23,9 @@ export default class GameBoard extends Component {
 
   render() {
     const tiles = [];
-    if (Point2.maxX) {
-      for (let y = 0; y < Point2.maxY + 1; y++) {
-        for (let x = 0; x < Point2.maxX + 1; x++) {
+    if (Point.maxX) {
+      for (let y = 0; y < Point.maxY + 1; y++) {
+        for (let x = 0; x < Point.maxX + 1; x++) {
           tiles.push(
             <GameTile key={'grid-cell-' + x + ',' + y} x={x} y={y} />
           );

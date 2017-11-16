@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import { Label, Icon, Form, Button, Segment } from 'semantic-ui-react';
-import * as actionCreators from '../state/reducers/player/playerActionCreators';
+import { playerActionCreators } from '../redux';
 
 class PlayerInfoPanel extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class PlayerInfoPanel extends Component {
 
   componentWillMount() {
     this.setState({
-      playerName: this.props.player.get('name')
+      playerName: this.props.player.name
     });
   }
 
@@ -43,7 +43,7 @@ class PlayerInfoPanel extends Component {
 
   handleOnSubmit(submitData) {
     this.props.dispatch(
-      actionCreators.updatePlayerInfo({ name: this.state.playerName }));
+      playerActionCreators.updatePlayerInfo({ name: this.state.playerName }));
     submitData.preventDefault();
     return false;
   }
@@ -56,12 +56,10 @@ PlayerInfoPanel.propTypes = {
   dispatch: PropTypes.func
 };
 
-PlayerInfoPanel.displayName = 'PlayerInfoPanel';
-
 function mapStateToProps(state) {
   return {
     player: state.player,
-    playerStrength: state.player.get('strength')
+    playerStrength: state.player.hitPoints
   };
 }
 

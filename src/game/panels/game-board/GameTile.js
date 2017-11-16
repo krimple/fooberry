@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import Point2 from '../../state/Point2';
+import Point from '../../Point';
 
 const TileIcon = styled.img`
   border: 1px solid white;
@@ -24,17 +24,6 @@ const PlayerIcon = styled.img`
   opacity: 1.0;
 `;
 
-/*const NPCThiefIcon = styled.img`
-  background-image: url(/icons/cathelineau/originals/svg/bad-gnome.svg);
-  border: 1px solid black;
-  max-height: 50px;
-  max-width: 50px;
-  height: 35px;
-  width: 35px;
-  opacity: 1.0;
-`;
-*/
-
 const NPCIcon = styled.img`
   background-image: url(${props => props.icon});
   border: 1px solid black;
@@ -47,11 +36,10 @@ const NPCIcon = styled.img`
 
 class GameTile extends React.PureComponent {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
+    if (!this.props.tile) {
+      return <span></span>;
+    }
     const key ='tile' + this.props.x + ',' + this.props.y;
 
     if (this.props.isPlayerLocation) {
@@ -81,25 +69,29 @@ function mapStateToProps(state, ownProps) {
   }
 
   const ownPoint = { x: ownProps.x, y: ownProps.y };
-  const playerPoint = Point2.toJSPoint(state.player.get('point'));
+  const playerPoint = state.player.point;
 
-  const npcImmutables = state.npcs.getIn(['npcs']);
-  if (npcImmutables) {
-    npcImmutables.forEach(npc => {
-      const hitPoints = npc.get('hitPoints');
-      const npcPoint = Point2.toJSPoint(npc.get('point'));
-      // if the npc is alive, see if it occupies this tile
-      if (hitPoints > 0 &&
-        Point2.equals(ownPoint, npcPoint)) {
-        npcIcon = npc.get('icon');
-        isNpcLocation = true;
-      }
-    });
+  const npcs = state.npcs;
+  if (!npcs) {
+    return {};
   }
+
+  for (let npcKey in npcs) {
+    const npc = npcs[npcKey];
+    const hitPoints = npc.hitPoints;
+    const npcPoint = npc.point;
+    // if the npc is alive, see if it occupies this tile
+    if (hitPoints > 0 &&
+      Point.equals(ownPoint, npcPoint)) {
+      npcIcon = npc.icon;
+      isNpcLocation = true;
+    }
+  }
+
   return {
-    tile: state.grid.getIn([ownProps.y,ownProps.x]),
+    tile: state.grid[ownProps.y][ownProps.x],
     isPlayerLocation:
-      Point2.equals(ownPoint, playerPoint),
+      Point.equals(ownPoint, playerPoint),
     isNPCLocation: isNpcLocation,
     npcIcon: npcIcon
   };
