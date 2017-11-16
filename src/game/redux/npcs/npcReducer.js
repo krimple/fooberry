@@ -35,7 +35,6 @@ function move(state, action) {
       }
     }
   };
-  console.dir(newState);
   return newState;
 
 }
