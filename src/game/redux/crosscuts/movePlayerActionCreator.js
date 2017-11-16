@@ -1,6 +1,6 @@
 import Point from '../../Point';
 import { move } from '../player/playerReducer';
-import { beginAttack } from '../game/gameReducer';
+import { beginMelee } from '../game/gameReducer';
 import { logMovement } from '../logger/loggerReducer';
 import { moveNPC } from '../npcs/npcReducer';
 
@@ -27,7 +27,7 @@ export function movePlayer(direction) {
     for (let key in npcs) {
       const npc = npcs[key];
       if (Point.equals(npc.point, newPlayerPosition)) {
-        dispatch(beginAttack(key));
+        dispatch(beginMelee(key));
         return;
       }
     }
@@ -46,17 +46,21 @@ export function movePlayer(direction) {
         newPlayerPosition.y
       );
 
-      console.log(`moving from ${JSON.stringify(currentNPCPoint)} to ${JSON.stringify(newNPCPoint)} for npc ${currentNPC.name}`);
+      if (Point.equals(newNPCPoint, newPlayerPosition)) {
+        continue;
+      }
 
-      const movingToOtherNPCPoint = npcList.includes( n => {
+      /*
+      const movingToOtherNPCPoint = !npcList.find( n => {
         return n.key !== currentNPC.key && 
           Point.equals(n.point, newNPCPoint);
       });
+      */
 
-      const otherNPCAlreadyRecordedMove = movesPending.includes(
+      const otherNPCAlreadyRecordedMove = movesPending.find(
         move => Point.equals(move.point, newNPCPoint));
 
-      if (!movingToOtherNPCPoint && !otherNPCAlreadyRecordedMove) {
+      if (!otherNPCAlreadyRecordedMove) {
         movesPending.push({npc: currentNPC, point: newNPCPoint});
       }
     }

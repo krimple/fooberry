@@ -7,7 +7,8 @@ import { attackDefendCreators, playerActionCreators, gameActionCreators } from '
 
 class AttackPanel extends Component {
   state = {
-    weapon: this.props.weapon
+    weapon: this.props.weapon,
+    duelInProgress: false
   };
 
   render = () => {
@@ -24,7 +25,7 @@ class AttackPanel extends Component {
     });
 
     return (
-      <Modal open={this.props.attacking === true}>
+      <Modal open={this.props.duelInProgress === true}>
         <Modal.Header>Oh no, a {this.props.attackingNpcName}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
@@ -36,7 +37,7 @@ class AttackPanel extends Component {
                 {weaponOptions}
               </select>
             </p>
-            <Button onClick={this.attack}>Attack!</Button>
+            <Button disabled={this.state.duelInProgress} onClick={this.attack}>Attack!</Button>
             <Button onClick={this.endAttack} floated='right'>End Attacks!</Button>
           </Modal.Description>
           <h2>Messages...</h2>
@@ -47,7 +48,6 @@ class AttackPanel extends Component {
   };
 
   attack = () => {
-    // TODO - fix null incoming weapon - not sure why
     let chosenWeapon = null;
     if (!this.state.weapon) {
       chosenWeapon = this.props.weapons[0];
@@ -56,11 +56,11 @@ class AttackPanel extends Component {
     }
     this.props.dispatch(playerActionCreators.choosePlayerWeapon(chosenWeapon));
     this.props.dispatch(attackDefendCreators.attackDefend(this.props.attackingNpc.key));
-  }
+  };
 
   selectWeapon = (event) => {
     this.setState({weapon: event.target.value});
-  }
+  };
 
   endAttack = () => {
     this.props.dispatch(gameActionCreators.endAttack());
@@ -69,6 +69,9 @@ class AttackPanel extends Component {
 
 AttackPanel.propTypes = {
   attacking: PropTypes.bool,
+  attackingNpc: PropTypes.object,
+  attackingNpcName: PropTypes.string,
+  duelInProgress: PropTypes.bool,
   weapons: PropTypes.any,
   weapon: PropTypes.string,
   dispatch: PropTypes.func,
@@ -78,20 +81,19 @@ AttackPanel.propTypes = {
 
 function mapStateToProps(state) {
   const additionalProps = {};
-  if (state.npcs && state.game.attacking) {
+  if (state.npcs && state.game.duelInProgress) {
     const npc = state.npcs[state.game.attackingNpc];
     additionalProps.attackingNpc = npc;
-    additionalProps.attacking = state.game.attacking;
+    additionalProps.attacking = true;
     additionalProps.attackingNpcName = npc.name; 
-
   } else {
     additionalProps.attackingNpc = null;
     additionalProps.attackingNpcName = '';
-    additionalProps.attacking = false;
   }
 
   return {
     ...additionalProps,
+    duelInProgress: state.game.duelInProgress,
     toast: state.toast.activeToast,
     weapons: state.player.weapons,
     weapon: state.player.weapon

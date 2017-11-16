@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Container} from 'semantic-ui-react';
+import {Container} from 'semantic-ui-react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
