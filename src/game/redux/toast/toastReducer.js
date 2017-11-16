@@ -42,7 +42,9 @@ export default function reducer(state = initialState, action) {
     break;
   case TOAST_TIME_TICK:
     if (state.activeToast && state.secondsLeft > 0) {
-      nextState = Object.assign({}, state, { secondsLeft: state.secondsLeft - 1});
+      nextState = {
+        ...state, 
+        secondsLeft: state.secondsLeft - 1};
     }
     break;
   case ACTIVATE_NEXT_TOAST:
@@ -51,12 +53,11 @@ export default function reducer(state = initialState, action) {
       const restToasts = state.pendingToasts.slice(1);
       const nextToastMessage = nextToast.message;
       const nextToastNumSeconds = nextToast.numSeconds;
-      console.log('TOASTS: next toast is: ', nextToast);
-      nextState = Object.assign({}, state, {
+      nextState = { ...state, 
         activeToast: nextToastMessage,
         secondsLeft: nextToastNumSeconds,
         pendingToasts: restToasts
-      });
+      };
     }
     break;
 
