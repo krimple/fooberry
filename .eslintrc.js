@@ -6,6 +6,7 @@ module.exports = {
     "jest": true
   },
 
+  "parser": "babel-eslint",
   "extends": ["eslint:recommended", "plugin:jest/recommended", "plugin:react/recommended", "plugin:redux-saga/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
