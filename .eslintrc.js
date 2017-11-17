@@ -7,7 +7,6 @@ module.exports = {
     "jest": true
   },
 
-<<<<<<< HEAD
   "parser": "babel-eslint",
   "extends": ["react-app", "eslint:recommended", "plugin:jest/recommended", "plugin:react/recommended", "plugin:redux-saga/recommended"],
   "parserOptions": {
