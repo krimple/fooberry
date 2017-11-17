@@ -1,4 +1,5 @@
 module.exports = {
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "commonjs": true,
@@ -6,12 +7,13 @@ module.exports = {
     "jest": true
   },
 
-  "extends": ["eslint:recommended", "plugin:jest/recommended", "plugin:react/recommended", "plugin:redux-saga/recommended"],
+  "extends": ["react-app", "eslint:recommended", "plugin:jest/recommended", "plugin:react/recommended", "plugin:redux-saga/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "jsx": true,
-      "react-in-jsx-scope": true
+      "react-in-jsx-scope": true,
+      "codeFrame": false
     },
     "sourceType": "module"
   },

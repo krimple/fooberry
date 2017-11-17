@@ -29,13 +29,13 @@ export default function reducer(state = initialState, action) {
   case BEGIN_GAME:
     return { ...initialState, gameRunning: true };
   case BEGIN_MELEE:
-    return { ...state, meleeInProgress: true }; 
+    return { ...state, meleeInProgress: true, attackingNpc: action.payload.npc };
   case END_MELEE:
-    return { ...state, meleeInProgress: false };
+    return { ...state, meleeInProgress: false, attackingNpc: null };
   case BEGIN_ATTACK:
     return { ...state, attacking: true, attackingNpc: action.payload.npc };
   case END_ATTACK:
-    return Object.assign({}, state, { attacking: false });
+    return { ...state, attacking: false };
   case BEGIN_DEFENSE:
     break;
   case END_DEFENSE:
@@ -45,7 +45,7 @@ export default function reducer(state = initialState, action) {
   case ATTACK:
     return state;
   case END_GAME:
-    return Object.assign({}, state, { gameRunning: false });
+    return {  ...state, gameRunning: false };
 
   default:
     return state;

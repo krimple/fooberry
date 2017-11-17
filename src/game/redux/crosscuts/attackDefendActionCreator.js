@@ -1,6 +1,7 @@
-import { endGame, endAttack } from '../game/gameReducer';
+import { endGame, endAttack, endMelee } from '../game/gameReducer';
 import { killNPC, updateNPCStrength } from '../npcs/npcReducer';
 import { sendToastMessage } from '../toast/toastReducer';
+import {updatePlayerStrength } from '../player/playerReducer';
 
 export function attackDefend(npcKey) {
   return (dispatch, getState) => {
@@ -14,6 +15,7 @@ export function attackDefend(npcKey) {
       // odd situation. Lower panel...
       dispatch.sendToastMessage('Well, that is odd. One of you are already dead!');
       dispatch(endAttack());
+      dispatch(endMelee());
       return;
     }
 
@@ -21,64 +23,54 @@ export function attackDefend(npcKey) {
 
     // attack npc
     const npcDamage = attack(playerWeapon);
-
     const npcHitPointsLeft = targetNPC.hitPoints - npcDamage;
-    let continueMelee = scorePlayerAttack(dispatch, getState, npcHitPointsLeft, targetNPC, npcDamage, player);
-    if (!continueMelee) {
+
+    dispatch(updateNPCStrength(npcKey, npcHitPointsLeft));
+    let npcAlive = scoreAttack(dispatch, player, targetNPC, npcHitPointsLeft, npcDamage);
+    if (!npcAlive) {
+      // end this melee
+      dispatch(killNPC(targetNPC.key));
+      dispatch(endAttack());
+      dispatch(endMelee());
+
+      // TODO maybe rip out and move to an end game saga???
+      if (Object.keys(getState().npcs).length === 0) {
+        dispatch(sendToastMessage(`${player.name} has killed all monsters. The game is over!!!`));
+        dispatch(endGame());
+      }
+
+      // no more work (why have the NPC attack when it is dead or the game is over?)
       return;
     }
 
     const playerDamage = attack(npcWeapon);
     const playerHitPointsLeft = player.hitPoints - playerDamage;
+    dispatch(updatePlayerStrength(playerHitPointsLeft));
 
-    continueMelee = scoreNpcAttack(dispatch, targetNPC, npcWeapon, player, playerDamage, playerHitPointsLeft);
-    if (!continueMelee) {
-      return false;
+    let playerAlive = scoreAttack(dispatch, targetNPC, player, playerHitPointsLeft, playerDamage);
+
+    // TODO - also maybe end game is in its own saga once the player dies?
+    if (!playerAlive) {
+      dispatch(endAttack());
+      dispatch(endMelee());
+      dispatch(endGame());
     }
   };
 }
 
-function scorePlayerAttack(dispatch, getState, npcHitPointsLeft, targetNPC, npcDamage, player) {
-  // score damage / report updates
-  if (npcDamage === 0) {
-
-    sendToastMessage(`${player.name} attack on ${targetNPC.name} misses!`);
-  } else if (npcHitPointsLeft <= 0) {     // npc is dead!
-    dispatch(sendToastMessage(`${targetNPC.name} attacked for ${npcDamage} points, killed by ${player.name} with ${player.weapon}`));
-    // wipe out NPC from collection
-    dispatch(killNPC(targetNPC.key));
-
-    // lower attack panel
-    dispatch(endAttack());
-
-    if (Object.keys(getState().npcs).length === 0) {
-      dispatch(sendToastMessage(`${player.name} has killed all monsters. The game is over!!!`));
-      dispatch(endGame());
-    }
+function scoreAttack(dispatch, attacker, target, hitPointsLeft, damage) {
+  const weaponName = attacker.weapons[attacker.weapon].name;
+  if (damage === 0) {
+    reportAttackMissed(dispatch, attacker.name, weaponName, target.name);
+  } else if (hitPointsLeft <= 0) {
+    reportKilled(dispatch, target.name, damage, attacker.name, weaponName);
     return false;
-  } else if (npcHitPointsLeft > 0) {
-    dispatch(sendToastMessage(`${targetNPC.name} attack by ${player.name} with ${player.weapon} succeeds. Damage is ${npcDamage}, ${targetNPC.name} has ${npcHitPointsLeft} hit points.`));
-    dispatch(updateNPCStrength(targetNPC.key, npcHitPointsLeft));
-  } else {
-    dispatch(sendToastMessage(`${player.name} attack on ${targetNPC.name} misses!`));
-  }
-}
-
-function scoreNpcAttack(dispatch, targetNPC, npcWeapon, player, playerDamage, playerHitPointsLeft) {
-  // attack player
-  if (playerDamage === 0) {
-    dispatch(sendToastMessage(`${targetNPC.name} attack on ${player.name} misses!`));
-    return true;
+  } else if (hitPointsLeft > 0) {
+    reportDamage(dispatch, target.name, attacker.name,weaponName, damage, hitPointsLeft);
   }
 
-  if (playerHitPointsLeft <= 0) {
-    dispatch(sendToastMessage(`${player.name} is dead. Long live ${player.name}`));
-    dispatch(endGame());
-  } else if (playerHitPointsLeft > 0) {
-    dispatch(sendToastMessage(`${targetNPC.name} attacks ${player.name} ` +
-                     `with ${npcWeapon.name} for ${playerDamage}. ` +
-                     `${player.name} has ${playerHitPointsLeft} hit points left.`));
-  }
+  // target is alive!
+  return true;
 }
 
 function attack(weaponData) {
@@ -91,3 +83,14 @@ function attack(weaponData) {
   }
 }
 
+function reportKilled(dispatch, targetName, damage, attackerName, attackerWeaponName) {
+  dispatch(sendToastMessage(`${targetName} attacked for ${damage} points, killed by ${attackerName} with the ${attackerWeaponName}`));
+}
+
+function reportAttackMissed(dispatch, attackerName, attackerWeapon, targetName) {
+  dispatch(sendToastMessage(`${attackerName} attack with ${attackerWeapon} on ${targetName} misses!`));
+}
+
+function reportDamage(dispatch, targetName, attackerName, attackerWeapon, damage, hitPointsLeft) {
+  dispatch(sendToastMessage(`${targetName} attack by ${attackerName} with ${attackerWeapon} succeeds. Damage is ${damage}, ${targetName} has ${hitPointsLeft} hit points.`));
+}

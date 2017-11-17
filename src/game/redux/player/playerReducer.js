@@ -14,10 +14,10 @@ const playerInitialState = {
   maxHitPoints: 100,
   weapon: 'mace',
   weapons: {
-    'mace': { damage: 8, accuracy: .5 },
-    'sword': { damage: 12, accuracy: .6 },
-    'bow': { damage: 4, accuracy: .9 },
-    'axe': { damage: 6, accuracy: .7 }
+    'mace': { name: 'Mace', damage: 8, accuracy: .5 },
+    'sword': { name: 'Vorpal Sword', damage: 12, accuracy: .6 },
+    'bow': { name: 'Long Bow', damage: 4, accuracy: .9 },
+    'axe': { name: 'Axe of Hacking', damage: 6, accuracy: .7 }
   }
 };
 
