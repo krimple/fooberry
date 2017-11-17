@@ -1,11 +1,16 @@
 import { Howl } from 'howler';
 
-export const BEGIN_ATTACK = 'fooberry/game/BEGIN_ATTACK';
-const ATTACK= 'fooberry/game/ATTACK';
 const TIME_TICK = 'fooberry/game/TIME_TICK';
+
+export const BEGIN_MELEE = 'fooberry/game/BEGIN_MELEE';
+export const END_MELEE = 'fooberry/game/END_MELEE';
+export const BEGIN_ATTACK = 'fooberry/game/BEGIN_ATTACK';
 export const END_ATTACK = 'fooberry/game/END_ATTACK';
+const ATTACK= 'fooberry/game/ATTACK';
+
 const BEGIN_DEFENSE = 'fooberry/game/BEGIN_DEFENSE';
 const END_DEFENSE = 'fooberry/game/END_DEFENSE';
+
 export const BEGIN_GAME = 'fooberry/game/BEGIN_GAME';
 export const END_GAME = 'fooberry/game/END_GAME';
 
@@ -13,6 +18,7 @@ const initialState = {
   gameRunning: false,
   attacking: false,
   defending: false,
+  meleeInProgress: false,
   moves: 0,
   tick: 0
 };
@@ -21,26 +27,29 @@ export default function reducer(state = initialState, action) {
 
   switch(action.type) {
   case BEGIN_GAME:
-    return Object.assign({}, initialState, { gameRunning: true });
+    return { ...initialState, gameRunning: true };
+  case BEGIN_MELEE:
+    return { ...state, meleeInProgress: true, attackingNpc: action.payload.npc };
+  case END_MELEE:
+    return { ...state, meleeInProgress: false, attackingNpc: null };
   case BEGIN_ATTACK:
-    return Object.assign({}, state, { attacking: true, attackingNpc: action.payload.npc });
-  case TIME_TICK:
-    return Object.assign({}, state, { tick: state.tick + 1 });
-  case ATTACK:
-    return state;
+    return { ...state, attacking: true, attackingNpc: action.payload.npc };
   case END_ATTACK:
-    return Object.assign({}, state, { attacking: false });
+    return { ...state, attacking: false };
   case BEGIN_DEFENSE:
     break;
   case END_DEFENSE:
     break;
+  case TIME_TICK:
+    return { ...state,  tick: state.tick + 1 };
+  case ATTACK:
+    return state;
   case END_GAME:
-    return Object.assign({}, state, { gameRunning: false });
+    return {  ...state, gameRunning: false };
 
   default:
+    return state;
   }
-  
-  return state;
 }
 
 // animation music...
@@ -65,16 +74,25 @@ export function beginGame() {
   };
 }
 
-export function beginAttack(npc) {
+export function beginMelee(npc) {
   return (dispatch) => {
     themeMusic.stop();
     attackMusic.play();
     dispatch({
-      type: BEGIN_ATTACK,
+      type: BEGIN_MELEE,
       payload: {
         npc: npc
       }
     });
+  };
+}
+
+export function beginAttack(npc) {
+  return {
+    type: BEGIN_ATTACK,
+    payload: {
+      npc: npc
+    }
   };
 }
 
@@ -95,6 +113,16 @@ export function endAttack() {
   };
 }
 
+export function endMelee() {
+  attackMusic.stop();
+  themeMusic.play();
+  themeMusic.fade(0, 0.5, 100);
+  return (dispatch) => {
+    dispatch({
+      type: END_MELEE
+    });
+  };
+}
 export function endGame() {
   themeMusic.fade(0.5, 0, 1000);
   return (dispatch) => {

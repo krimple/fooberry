@@ -30,8 +30,8 @@ function move(state, action) {
     ...state, [npcKey]: {
       ...npcObject,
       point: {
-          x: coordinates.x,
-          y: coordinates.y
+        x: coordinates.x,
+        y: coordinates.y
       }
     }
   };
