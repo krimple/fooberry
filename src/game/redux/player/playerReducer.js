@@ -12,6 +12,8 @@ const playerInitialState = {
   point: { x: 7, y: 7 },
   hitPoints: 100,
   maxHitPoints: 100,
+  // TODO - let this be a setting in the app panel
+  icon: '/icons/delapouite/originals/svg/walking-scout.svg',
   weapon: 'mace',
   weapons: {
     'mace': { name: 'Mace', damage: 8, accuracy: .5 },

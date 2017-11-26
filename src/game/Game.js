@@ -6,7 +6,7 @@ import MessagePanel from './panels/MessagePanel';
 
 import { Sidebar, Button, Grid, Segment, Menu, Container, Header } from 'semantic-ui-react';
 
-import {  playerActionCreators, gameActionCreators, gameResetActionCreator } from './redux';
+import {  playerActionCreators, gameActionCreators, gameResetActionCreators } from './redux';
 
 import GameBoard from './panels/game-board/GameBoard';
 import PanelContainer from './panels/PanelContainer';
@@ -41,7 +41,7 @@ class Game extends Component {
     };
 
     this.startGame = () => {
-      this.props.dispatch(gameResetActionCreator.resetGame());
+      this.props.dispatch(gameResetActionCreators.resetGame());
     };
 
     this.endGame = () => {

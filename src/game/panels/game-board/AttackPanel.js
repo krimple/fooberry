@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -5,7 +6,14 @@ import {Header, Modal, Button, Segment} from 'semantic-ui-react';
 
 import { attackDefendCreators, playerActionCreators, gameActionCreators } from '../../redux';
 
+const CharacterIcon = styled.img`
+  height: 60px;
+  width: 60px;
+  background-image: url(${props => props.icon});
+`;
+
 class AttackPanel extends Component {
+
   state = {
     weapon: this.props.weapon
   };
@@ -29,6 +37,11 @@ class AttackPanel extends Component {
         <Modal.Content>
           <Modal.Description>
             <Header>You are attacking the { this.props.attackingNpcName }</Header>
+            <Segment align={'center'}>
+              <CharacterIcon icon={ this.props.playerIcon } />
+              &nbsp;
+              <CharacterIcon icon={ this.props.npcIcon } /> 
+            </Segment>
             <p>{ this.props.weapon }</p>
             <p>Weapon:  
               <select onChange={this.selectWeapon}
@@ -58,9 +71,12 @@ class AttackPanel extends Component {
   };
 
   selectWeapon = (event) => {
+    // Once entering setState the event target is nullified with the event
+    // this may be new with 16.x, didn't cause trouble with 15.x
+    const weapon = event.target.value;
     this.setState((state, props) => {
       return {
-        weapon: event.target.value
+        weapon: weapon
       };
     });
   };
@@ -80,7 +96,9 @@ AttackPanel.propTypes = {
   weapon: PropTypes.string,
   dispatch: PropTypes.func,
   toast: PropTypes.string,
-  npcName: PropTypes.string
+  npcName: PropTypes.string,
+  playerIcon: PropTypes.string,
+  npcIcon: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -90,10 +108,12 @@ function mapStateToProps(state) {
     additionalProps.attackingNpc = npc;
     additionalProps.attackingNpcName = npc.name;
     additionalProps.attackingNpcKey = npc.key;
+    additionalProps.npcIcon = npc.icon;
   } else {
     additionalProps.attackingNpc = null;
     additionalProps.attackingNpcName = null;
     additionalProps.attackingNpcKey = null;
+    additionalProps.npcIcon = null;
   }
 
   const newProps = {
@@ -102,7 +122,8 @@ function mapStateToProps(state) {
     attackInProgress: state.game.attackInProgress,
     toast: state.toast.activeToast,
     weapons: state.player.weapons,
-    weapon: state.player.weapon
+    weapon: state.player.weapon,
+    playerIcon: state.player.icon
   };
   return newProps;
 }

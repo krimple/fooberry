@@ -1,8 +1,10 @@
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
-//import logger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 
 import createSagaMiddleware from 'redux-saga';
 import thunkMiddleware from 'redux-thunk';
+
+import promiseMiddleware from 'redux-promise-middleware';
 
 import loggerReducer from './logger/loggerReducer';
 import npcReducer from './npcs/npcReducer';
@@ -13,8 +15,9 @@ import toastReducer from './toast/toastReducer';
 import { sagas as toastSagas } from './toast/toastReducer';
 
 const sagaMiddleware = createSagaMiddleware();
+const reduxLogger = createLogger({ diff: true });
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const createReduxStore = () => {
   const store = createStore(
@@ -30,7 +33,9 @@ const createReduxStore = () => {
     composeEnhancers(
       applyMiddleware(
         sagaMiddleware,
-        thunkMiddleware))
+        promiseMiddleware(),
+        thunkMiddleware,
+        reduxLogger))
   );
 
   // fire up sagas for toast management
