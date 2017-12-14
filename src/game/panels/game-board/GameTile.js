@@ -15,7 +15,7 @@ const TileIcon = styled.img`
 `;
 
 const PlayerIcon = styled.img`
-  background-image: url(/icons/delapouite/originals/svg/walking-scout.svg);
+  background-image: url(./icons/delapouite/originals/svg/walking-scout.svg);
   border: 1px solid black;
   height: 35px;
   width: 35px;
