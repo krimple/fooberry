@@ -54,13 +54,13 @@ export default function reducer(state = initialState, action) {
 
 // animation music...
 let themeMusic = new Howl({
-  src: ['/sfx/gameplay-music.mp3'],
+  src: ['./sfx/gameplay-music.mp3'],
   volume: 0.5,
   loop: true
 });
 
 let attackMusic = new Howl({
-  src: ['/sfx/attack-music.mp3'],
+  src: ['./sfx/attack-music.mp3'],
   volume: 0.7,
   loop: true
 });

@@ -79,7 +79,7 @@ export function updateNPCStrength(npcKey, strength) {
 
 export function loadNPCs() {
   return function(dispatch) {
-    fetch('/npc-config.json')
+    fetch('./npc-config.json')
       .then((data) => {
         return data.json();
       }).then((data) => {
